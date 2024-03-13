@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace HamedStack.Result;
+namespace HamedStack.TheResult;
 /// <summary>
 /// Represents the outcome of an operation with a specific return type, providing a standardized way to communicate success, failure, and related metadata.
 /// </summary>

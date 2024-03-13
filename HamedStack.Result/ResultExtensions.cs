@@ -2,7 +2,7 @@
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
 
-namespace HamedStack.Result;
+namespace HamedStack.TheResult;
 
 
 public static class ResultExtensions

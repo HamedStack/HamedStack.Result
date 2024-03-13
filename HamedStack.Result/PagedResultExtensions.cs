@@ -1,4 +1,4 @@
-﻿namespace HamedStack.Result;
+﻿namespace HamedStack.TheResult;
 
 public static class PagedResultExtensions
 {

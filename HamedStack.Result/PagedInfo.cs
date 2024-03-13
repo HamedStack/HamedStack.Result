@@ -1,6 +1,6 @@
 ﻿// ReSharper disable UnusedMember.Global
 
-namespace HamedStack.Result;
+namespace HamedStack.TheResult;
 
 /// <summary>
 /// Represents pagination information for a collection of items, including details about the current page,

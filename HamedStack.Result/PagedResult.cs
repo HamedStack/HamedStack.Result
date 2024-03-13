@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace HamedStack.Result;
+namespace HamedStack.TheResult;
 /// <summary>
 /// Represents a paged outcome of an operation with a specific return type, extending <see cref="Result{T}"/> with pagination details.
 /// </summary>

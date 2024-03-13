@@ -1,4 +1,4 @@
-﻿namespace HamedStack.Result;
+﻿namespace HamedStack.TheResult;
 
 /// <summary>
 /// Defines the possible result statuses that can be returned from an operation.
