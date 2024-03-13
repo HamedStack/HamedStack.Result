@@ -1,21 +1,53 @@
-﻿// ReSharper disable UnusedMember.Global
+﻿// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedMember.Global
 
 namespace HamedStack.Result;
 
-/// <summary>
-/// Provides extension methods for <see cref="Result{T}"/> to support converting to <see cref="PagedResult{T}"/>.
-/// </summary>
+
 public static class ResultExtensions
 {
-    /// <summary>
-    /// Converts a <see cref="Result{T}"/> to a <see cref="PagedResult{T}"/> with additional pagination information.
-    /// </summary>
-    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The result to convert.</param>
-    /// <param name="pagedInfo">The pagination information to include in the new paged result.</param>
-    /// <returns>A <see cref="PagedResult{T}"/> that contains the value and success message from the original result, as well as the provided pagination information.</returns>
-    public static PagedResult<T> ToPagedResult<T>(this Result<T> result, PagedInfo pagedInfo)
+    public static Result Finally(this Result result, Action<Result> action)
     {
-        return PagedResult<T>.Success(result.Value, pagedInfo, result.SuccessMessage);
+        action(result);
+        return result;
+    }
+
+    public static Result Flatten(this Result<Result> result)
+    {
+        return result.IsSuccess
+            ? Result.Success()
+            : Result.Error(result.ErrorMessages);
+    }
+
+    public static Result IfFailure(this Result result, Action<Result> action)
+    {
+        if (!result.IsSuccess) action(result);
+        return result;
+    }
+
+    public static Result IfSuccess(this Result result, Action<Result> action)
+    {
+        if (result.IsSuccess) action(result);
+        return result;
+    }
+
+    public static Result IfSuccess(this Result result, Action action)
+    {
+        if (result.IsSuccess) action();
+        return result;
+    }
+    public static Result IfFailure(this Result result, Action action)
+    {
+        if (!result.IsSuccess) action();
+        return result;
+    }
+    public static Result Join(this IEnumerable<Result> results, string separator = ", ")
+    {
+        var failures = results.Where(r => !r.IsSuccess).ToList();
+        if (!failures.Any()) return Result.Success();
+
+        var combinedMessage = string.Join(separator, failures.SelectMany(f => f.ErrorMessages));
+        return Result.Error(combinedMessage);
     }
 }
