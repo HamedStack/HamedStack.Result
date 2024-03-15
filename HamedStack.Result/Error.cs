@@ -21,10 +21,27 @@ public class Error
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Error"/> class with the specified error message and code.
+    /// </summary>
+    /// <param name="message">The message that describes the error.</param>
+    /// <param name="code">The code associated with the error.</param>
+    public Error(string message, string code)
+    {
+        Message = message;
+        Code = code;
+    }
+
+    /// <summary>
     /// Gets or sets the message that describes the current error.
     /// </summary>
     /// <value>The error message.</value>
     public string Message { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the code associated with the error.
+    /// </summary>
+    /// <value>The error code.</value>
+    public string? Code { get; set; }
 
     /// <summary>
     /// Gets the metadata associated with the error, providing additional information about the error.
