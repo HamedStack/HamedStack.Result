@@ -2,6 +2,10 @@
 
 public static class ResultTExtensions
 {
+    public static string[] GetErrorMessages<T>(this Result<T> result)
+    {
+        return result.Errors.Select(e => e.Message).ToArray();
+    }
     public static Result<IEnumerable<T>> Aggregate<T>(this IEnumerable<Result<T>> results)
     {
         var resultArray = results.ToArray();

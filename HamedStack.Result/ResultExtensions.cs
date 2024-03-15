@@ -7,6 +7,10 @@ namespace HamedStack.TheResult;
 
 public static class ResultExtensions
 {
+    public static string[] GetErrorMessages(this Result result)
+    {
+        return result.Errors.Select(e => e.Message).ToArray();
+    }
     public static Result Finally(this Result result, Action<Result> action)
     {
         action(result);
@@ -47,7 +51,7 @@ public static class ResultExtensions
         var failures = results.Where(r => !r.IsSuccess).ToList();
         if (!failures.Any()) return Result.Success();
 
-        var combinedMessage = string.Join(separator, failures.SelectMany(f => f.Errors).Select(e=>e.Message));
+        var combinedMessage = string.Join(separator, failures.SelectMany(f => f.Errors).Select(e => e.Message));
         return Result.Error(combinedMessage);
     }
 }

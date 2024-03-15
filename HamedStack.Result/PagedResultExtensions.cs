@@ -13,4 +13,9 @@ public static class PagedResultExtensions
     {
         return PagedResult<T>.Success(result.Value, pagedInfo, result.SuccessMessage);
     }
+
+    public static string[] GetErrorMessages<T>(this PagedResult<T> result)
+    {
+        return result.Errors.Select(e => e.Message).ToArray();
+    }
 }
