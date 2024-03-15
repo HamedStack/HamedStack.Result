@@ -7,7 +7,7 @@ public static class ResultTExtensions
         var resultArray = results.ToArray();
         foreach (var result in resultArray)
             if (!result.IsSuccess)
-                return Result<IEnumerable<T>>.Error(null, result.ErrorMessages);
+                return Result<IEnumerable<T>>.Error(null, result.Errors);
 
         var output = resultArray.Select(r => r.Value);
         return Result<IEnumerable<T>>.Success(output!);
@@ -17,7 +17,7 @@ public static class ResultTExtensions
     {
         return (Result<TResult>)(result.IsSuccess
             ? func(result.Value)
-            : Result.Error(result.ErrorMessages));
+            : Result.Error(result.Errors));
     }
 
     public static Result Combine(this IEnumerable<Result> results, string separator = ", ")
@@ -25,7 +25,7 @@ public static class ResultTExtensions
         var failures = results.Where(r => !r.IsSuccess).ToList();
         if (!failures.Any()) return Result.Success();
 
-        var combinedMessage = string.Join(separator, failures.SelectMany(f => f.ErrorMessages));
+        var combinedMessage = string.Join(separator, failures.SelectMany(f => f.Errors.Select(e => e.Message)));
         return Result.Error(combinedMessage);
     }
     public static Result<T> Ensure<T>(this Result<T> result, Func<T?, bool> predicate, string errorMessage)
@@ -44,7 +44,7 @@ public static class ResultTExtensions
     {
         return (Result<T>)(result.IsSuccess
             ? result.Value!
-            : Result.Error(result.ErrorMessages));
+            : Result.Error(result.Errors.Select(e => e.Message).ToArray()));
     }
 
     public static Result<T> IfFailure<T>(this Result<T> result, Action<Result<T>> action)
@@ -75,7 +75,7 @@ public static class ResultTExtensions
     {
         return (Result<TResult>)(result.IsSuccess
             ? Result<TResult>.Success(mapper(result.Value))
-            : Result.Error(result.ErrorMessages));
+            : Result.Error(result.Errors));
     }
 
     public static Result<T> MapError<T>(this Result<T> result, params string[] errorMessages)
@@ -90,9 +90,15 @@ public static class ResultTExtensions
     {
         return result.IsSuccess
             ? success(result.Value)
-            : failure(result.ErrorMessages);
+            : failure(result.Errors.Select(e => e.Message).ToArray());
     }
-
+    public static TResult Match<T, TResult>(this Result<T> result, Func<T?, TResult> success,
+        Func<Error[], TResult> failure)
+    {
+        return result.IsSuccess
+            ? success(result.Value)
+            : failure(result.Errors);
+    }
     public static T? OrElse<T>(this Result<T> result, T? defaultValue = default)
     {
         return result.IsSuccess ? result.Value! : defaultValue;
@@ -116,7 +122,7 @@ public static class ResultTExtensions
 
     public static Result<T> Unwrap<T>(this Result<T?> result)
     {
-        return result.IsSuccess ? Result<T>.Success(result.Value!) : Result<T>.Error(result.Value, result.ErrorMessages);
+        return result.IsSuccess ? Result<T>.Success(result.Value!) : Result<T>.Error(result.Value, result.Errors);
     }
 
     public static T? UnwrapOr<T>(this Result<T> result, T? defaultValue)
