@@ -65,9 +65,13 @@ public class Result<T> : Result
     /// <returns>An error <see cref="Result{T}"/>.</returns>
     public static Result<T> Error(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Error };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Error };
     }
-
+    public static Result<T> Error(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Error };
+    }
     /// <summary>
     /// Creates a forbidden result with the specified value and one or more error messages.
     /// </summary>
@@ -76,9 +80,13 @@ public class Result<T> : Result
     /// <returns>A forbidden <see cref="Result{T}"/>.</returns>
     public static Result<T> Forbidden(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Forbidden };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Forbidden };
     }
-
+    public static Result<T> Forbidden(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Forbidden };
+    }
     /// <summary>
     /// Creates an unauthorized result with the specified value and one or more error messages.
     /// </summary>
@@ -87,9 +95,13 @@ public class Result<T> : Result
     /// <returns>An unauthorized <see cref="Result{T}"/>.</returns>
     public static Result<T> Unauthorized(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Unauthorized };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unauthorized };
     }
-
+    public static Result<T> Unauthorized(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
     /// <summary>
     /// Creates an invalid result with the specified value and one or more error messages.
     /// </summary>
@@ -98,9 +110,13 @@ public class Result<T> : Result
     /// <returns>An invalid <see cref="Result{T}"/>.</returns>
     public static Result<T> Invalid(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Invalid };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Invalid };
     }
-
+    public static Result<T> Invalid(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Invalid };
+    }
     /// <summary>
     /// Creates a not found result with the specified value and one or more error messages.
     /// </summary>
@@ -109,9 +125,13 @@ public class Result<T> : Result
     /// <returns>A not found <see cref="Result{T}"/>.</returns>
     public static Result<T> NotFound(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.NotFound };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.NotFound };
     }
-
+    public static Result<T> NotFound(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.NotFound };
+    }
     /// <summary>
     /// Creates a conflict result with the specified value and one or more error messages.
     /// </summary>
@@ -120,9 +140,13 @@ public class Result<T> : Result
     /// <returns>A conflict <see cref="Result{T}"/>.</returns>
     public static Result<T> Conflict(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Conflict };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Conflict };
     }
-
+    public static Result<T> Conflict(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Conflict };
+    }
     /// <summary>
     /// Creates an unavailable result with the specified value and one or more error messages.
     /// </summary>
@@ -131,9 +155,13 @@ public class Result<T> : Result
     /// <returns>An unavailable <see cref="Result{T}"/>.</returns>
     public static Result<T> Unavailable(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Unavailable };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unavailable };
     }
-
+    public static Result<T> Unavailable(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unavailable };
+    }
     /// <summary>
     /// Creates an unsupported result with the specified value and one or more error messages.
     /// </summary>
@@ -142,9 +170,13 @@ public class Result<T> : Result
     /// <returns>An unsupported <see cref="Result{T}"/>.</returns>
     public static Result<T> Unsupported(T? value, params string[] errorMessages)
     {
-        return new Result<T> { IsSuccess = false, Value = value, ErrorMessages = errorMessages, Status = ResultStatus.Unsupported };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unsupported };
     }
-
+    public static Result<T> Unsupported(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unavailable };
+    }
     /// <summary>
     /// Allows implicit conversion from <see cref="Result{T}"/> to <typeparamref name="T"/>, enabling the value to be used directly.
     /// </summary>

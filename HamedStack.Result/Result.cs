@@ -3,6 +3,7 @@
 using System.Text.Json.Serialization;
 
 namespace HamedStack.TheResult;
+
 /// <summary>
 /// Represents the outcome of an operation, providing a standardized way to communicate success, failure, and related metadata.
 /// </summary>
@@ -27,10 +28,10 @@ public class Result
     public bool IsSuccess { get; protected set; } = true;
 
     /// <summary>
-    /// Gets an array of error messages associated with a failed operation.
+    /// Gets an array of <see cref="Error"/> instances associated with a failed operation. Each <see cref="Error"/> in the array provides details about a specific error that occurred during the operation.
     /// </summary>
-    /// <value>An array of error messages.</value>
-    public string[] ErrorMessages { get; protected set; } = new string[] { };
+    /// <value>An array of <see cref="Error"/> instances.</value>
+    public Error[] Errors { get; protected set; } = new Error[] { };
 
     /// <summary>
     /// Gets the success message for a successful operation.
@@ -71,7 +72,18 @@ public class Result
     /// <returns>An error <see cref="Result"/>.</returns>
     public static Result Error(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Error };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Error };
+    }
+
+    /// <summary>
+    /// Creates an error <see cref="Result"/> instance with the specified errors, indicating a failed operation.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances representing the errors encountered during the operation.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent an error state, including the provided error details.</returns>
+    public static Result Error(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Error };
     }
 
     /// <summary>
@@ -81,9 +93,19 @@ public class Result
     /// <returns>A forbidden <see cref="Result"/>.</returns>
     public static Result Forbidden(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Forbidden };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
-
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance representing a forbidden operation, populated with the specified errors.
+    /// This method is typically used when an operation is not allowed due to security or permission issues, and it provides details about the reasons through the specified errors.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances representing the specific reasons why the operation is forbidden.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent a forbidden state, including the provided error details.</returns>
+    public static Result Forbidden(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
+    }
     /// <summary>
     /// Creates an unauthorized result with one or more error messages.
     /// </summary>
@@ -91,7 +113,18 @@ public class Result
     /// <returns>An unauthorized <see cref="Result"/>.</returns>
     public static Result Unauthorized(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Unauthorized };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating an unauthorized operation, populated with specified errors.
+    /// This method is used when an operation cannot proceed because the requester lacks proper authentication.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances describing specific authentication failures.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent an unauthorized state, including the provided error details.</returns>
+    public static Result Unauthorized(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
 
     /// <summary>
@@ -101,7 +134,18 @@ public class Result
     /// <returns>An invalid <see cref="Result"/>.</returns>
     public static Result Invalid(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Invalid };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating an invalid operation, populated with specified errors.
+    /// This method is used when an operation is rejected due to validation failures or other rules that render the request invalid.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances describing specific reasons for the operation's invalidity.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent an invalid state, including the provided error details.</returns>
+    public static Result Invalid(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
     }
 
     /// <summary>
@@ -111,7 +155,18 @@ public class Result
     /// <returns>A not found <see cref="Result"/>.</returns>
     public static Result NotFound(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.NotFound };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating that the requested resource was not found, populated with specified errors.
+    /// This method is typically used when an operation cannot be completed because a necessary resource is missing.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances that provide details about what was not found.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent a not found state, including the provided error details.</returns>
+    public static Result NotFound(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
 
     /// <summary>
@@ -121,7 +176,18 @@ public class Result
     /// <returns>A conflict <see cref="Result"/>.</returns>
     public static Result Conflict(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Conflict };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating a conflict in the operation, populated with specified errors.
+    /// This method is used when an operation cannot proceed because of conflicting state or resources.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances describing specific conflicts encountered.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent a conflict state, including the provided error details.</returns>
+    public static Result Conflict(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
 
     /// <summary>
@@ -131,7 +197,18 @@ public class Result
     /// <returns>An unavailable <see cref="Result"/>.</returns>
     public static Result Unavailable(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Unavailable };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating that the service or resource is currently unavailable, populated with specified errors.
+    /// This method can be used during maintenance periods or when a service is down for any reason.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances explaining the reasons for the unavailability.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent an unavailable state, including the provided error details.</returns>
+    public static Result Unavailable(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
     }
 
     /// <summary>
@@ -141,7 +218,18 @@ public class Result
     /// <returns>An unsupported <see cref="Result"/>.</returns>
     public static Result Unsupported(params string[] errorMessages)
     {
-        return new Result { IsSuccess = false, ErrorMessages = errorMessages, Status = ResultStatus.Unsupported };
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating that the operation is unsupported, populated with specified errors.
+    /// This method is used when an operation cannot be completed because it is not supported by the system, perhaps due to being obsolete or not yet implemented.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances describing specific reasons why the operation is unsupported.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent an unsupported state, including the provided error details.</returns>
+    public static Result Unsupported(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
     }
 
     /// <summary>
