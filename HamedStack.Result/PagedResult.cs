@@ -72,7 +72,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>An error <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Error(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Error)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -101,7 +101,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>A forbidden <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Forbidden(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -130,7 +130,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>An unauthorized <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Unauthorized(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unauthorized)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -159,7 +159,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>An invalid <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Invalid(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -188,7 +188,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>A not found <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> NotFound(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -217,7 +217,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>A conflict <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Conflict(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -246,7 +246,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>An unavailable <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Unavailable(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unavailable)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
@@ -275,7 +275,7 @@ public class PagedResult<T> : Result<T>
     /// <returns>An unsupported <see cref="PagedResult{T}"/>.</returns>
     public new static PagedResult<T> Unsupported(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unsupported)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,

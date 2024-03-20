@@ -10,26 +10,36 @@ public class Error
     /// Protected constructor to prevent instantiation without providing a message.
     /// </summary>
     protected Error() { }
-
+    
     /// <summary>
-    /// Initializes a new instance of the <see cref="Error"/> class with the specified error message.
+    /// Initializes a new instance of the <see cref="Error"/> class with the specified error message and type.
     /// </summary>
     /// <param name="message">The message that describes the error.</param>
-    public Error(string message)
+    /// <param name="errorType">The type of error.</param>
+    public Error(string message, ErrorType errorType)
     {
         Message = message;
+        ErrorType = errorType;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Error"/> class with the specified error message and code.
+    /// Initializes a new instance of the <see cref="Error"/> class with the specified error message, code, and type.
     /// </summary>
     /// <param name="message">The message that describes the error.</param>
     /// <param name="code">The code associated with the error.</param>
-    public Error(string message, string code)
+    /// <param name="errorType">The type of error.</param>
+    public Error(string message, string code, ErrorType errorType)
     {
         Message = message;
         Code = code;
+        ErrorType = errorType;
     }
+
+    /// <summary>
+    /// Gets or sets the type of error.
+    /// </summary>
+    /// <value>The type of error.</value>
+    public ErrorType ErrorType { get; set; }
 
     /// <summary>
     /// Gets or sets the message that describes the current error.
@@ -50,6 +60,17 @@ public class Error
     /// <value>The metadata dictionary.</value>
     public IDictionary<string, object?> Metadata { get; protected set; } = new Dictionary<string, object?>();
 
+    /// <summary>
+    /// Gets a value indicating whether the error has a code associated with it.
+    /// </summary>
+    /// <value><c>true</c> if the error has a code; otherwise, <c>false</c>.</value>
+    public bool HasCode => !string.IsNullOrWhiteSpace(Code);
+
+    /// <summary>
+    /// Gets a value indicating whether the error has any metadata associated with it.
+    /// </summary>
+    /// <value><c>true</c> if the error has metadata; otherwise, <c>false</c>.</value>
+    public bool HasMetadata => Metadata.Count > 0;
     /// <summary>
     /// Adds a new key-value pair to the metadata dictionary or updates the value if the key already exists.
     /// </summary>

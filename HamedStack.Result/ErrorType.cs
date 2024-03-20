@@ -1,15 +1,10 @@
 ﻿namespace HamedStack.TheResult;
 
 /// <summary>
-/// Defines the possible result statuses that can be returned from an operation.
+/// Represents the type of error that occurred during an operation.
 /// </summary>
-public enum ResultStatus
+public enum ErrorType
 {
-    /// <summary>
-    /// Indicates that the operation was successful.
-    /// </summary>
-    Success,
-
     /// <summary>
     /// Indicates a general error occurred during the operation.
     /// </summary>

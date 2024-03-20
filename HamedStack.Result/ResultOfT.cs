@@ -65,7 +65,7 @@ public class Result<T> : Result
     /// <returns>An error <see cref="Result{T}"/>.</returns>
     public static Result<T> Error(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Error)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Error };
     }
     public static Result<T> Error(T? value, params Error[] errors)
@@ -80,7 +80,7 @@ public class Result<T> : Result
     /// <returns>A forbidden <see cref="Result{T}"/>.</returns>
     public static Result<T> Forbidden(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Forbidden };
     }
     public static Result<T> Forbidden(T? value, params Error[] errors)
@@ -95,7 +95,7 @@ public class Result<T> : Result
     /// <returns>An unauthorized <see cref="Result{T}"/>.</returns>
     public static Result<T> Unauthorized(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unauthorized)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unauthorized };
     }
     public static Result<T> Unauthorized(T? value, params Error[] errors)
@@ -110,7 +110,7 @@ public class Result<T> : Result
     /// <returns>An invalid <see cref="Result{T}"/>.</returns>
     public static Result<T> Invalid(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Invalid };
     }
     public static Result<T> Invalid(T? value, params Error[] errors)
@@ -125,7 +125,7 @@ public class Result<T> : Result
     /// <returns>A not found <see cref="Result{T}"/>.</returns>
     public static Result<T> NotFound(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.NotFound };
     }
     public static Result<T> NotFound(T? value, params Error[] errors)
@@ -140,7 +140,7 @@ public class Result<T> : Result
     /// <returns>A conflict <see cref="Result{T}"/>.</returns>
     public static Result<T> Conflict(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Conflict };
     }
     public static Result<T> Conflict(T? value, params Error[] errors)
@@ -155,7 +155,7 @@ public class Result<T> : Result
     /// <returns>An unavailable <see cref="Result{T}"/>.</returns>
     public static Result<T> Unavailable(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unavailable)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unavailable };
     }
     public static Result<T> Unavailable(T? value, params Error[] errors)
@@ -170,7 +170,7 @@ public class Result<T> : Result
     /// <returns>An unsupported <see cref="Result{T}"/>.</returns>
     public static Result<T> Unsupported(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unsupported)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unsupported };
     }
     public static Result<T> Unsupported(T? value, params Error[] errors)

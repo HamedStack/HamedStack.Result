@@ -72,7 +72,7 @@ public class Result
     /// <returns>An error <see cref="Result"/>.</returns>
     public static Result Error(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Error)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Error };
     }
 
@@ -93,7 +93,7 @@ public class Result
     /// <returns>A forbidden <see cref="Result"/>.</returns>
     public static Result Forbidden(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
     /// <summary>
@@ -113,7 +113,7 @@ public class Result
     /// <returns>An unauthorized <see cref="Result"/>.</returns>
     public static Result Unauthorized(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unauthorized)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
     /// <summary>
@@ -134,7 +134,7 @@ public class Result
     /// <returns>An invalid <see cref="Result"/>.</returns>
     public static Result Invalid(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
     }
     /// <summary>
@@ -155,7 +155,7 @@ public class Result
     /// <returns>A not found <see cref="Result"/>.</returns>
     public static Result NotFound(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
     /// <summary>
@@ -176,7 +176,7 @@ public class Result
     /// <returns>A conflict <see cref="Result"/>.</returns>
     public static Result Conflict(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
     /// <summary>
@@ -197,7 +197,7 @@ public class Result
     /// <returns>An unavailable <see cref="Result"/>.</returns>
     public static Result Unavailable(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unavailable)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
     }
     /// <summary>
@@ -218,7 +218,7 @@ public class Result
     /// <returns>An unsupported <see cref="Result"/>.</returns>
     public static Result Unsupported(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unsupported)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
     }
     /// <summary>
