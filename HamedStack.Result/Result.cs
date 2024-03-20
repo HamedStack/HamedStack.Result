@@ -47,6 +47,12 @@ public class Result
     public IDictionary<string, object?> Metadata { get; protected set; } = new Dictionary<string, object?>();
 
     /// <summary>
+    /// Gets a value indicating whether the result has any metadata associated with it.
+    /// </summary>
+    /// <value><c>true</c> if the result has metadata; otherwise, <c>false</c>.</value>
+    public bool HasMetadata => Metadata.Count > 0;
+
+    /// <summary>
     /// Creates a success result.
     /// </summary>
     /// <returns>A success <see cref="Result"/>.</returns>
