@@ -58,19 +58,19 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates an error result with the specified value and one or more error messages.
+    /// Creates an failure result with the specified value and one or more error messages.
     /// </summary>
-    /// <param name="value">The value associated with the error result.</param>
+    /// <param name="value">The value associated with the failure result.</param>
     /// <param name="errorMessages">The error messages.</param>
     /// <returns>An error <see cref="Result{T}"/>.</returns>
-    public static Result<T> Error(T? value, params string[] errorMessages)
+    public static Result<T> Failure(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Error)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Error };
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Failure)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Failure };
     }
-    public static Result<T> Error(T? value, params Error[] errors)
+    public static Result<T> Failure(T? value, params Error[] errors)
     {
-        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Error };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Failure };
     }
     /// <summary>
     /// Creates a forbidden result with the specified value and one or more error messages.
@@ -173,10 +173,43 @@ public class Result<T> : Result
         var errors = errorMessages.Select(e => new Error(e, ErrorType.Unsupported)).ToArray();
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unsupported };
     }
+    /// <summary>
+    /// Creates a <see cref="Result{T}"/> indicating an unsupported operation, with the provided value and errors.
+    /// </summary>
+    /// <param name="value">The value of type <typeparamref name="T"/> associated with the result, which may represent a default or relevant value in the context of the unsupported operation.</param>
+    /// <param name="errors">An array of <see cref="Error"/> objects that describe the reasons why the operation is unsupported.</param>
+    /// <typeparam name="T">The type of the value associated with the operation result.</typeparam>
+    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, the specified value, the provided errors, and the <c>Status</c> set to <see cref="ResultStatus.Unavailable"/>.</returns>
     public static Result<T> Unsupported(T? value, params Error[] errors)
     {
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unavailable };
     }
+
+    /// <summary>
+    /// Creates a <see cref="Result{T}"/> indicating a validation failure, with custom error messages and an associated value.
+    /// </summary>
+    /// <param name="value">The value of type <typeparamref name="T"/> to be associated with the validation failure result, potentially representing the attempted input.</param>
+    /// <param name="errorMessages">An array of error messages that describe the validation failures.</param>
+    /// <typeparam name="T">The type of the value associated with the operation result.</typeparam>
+    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, the specified value, errors generated from the provided messages with a <see cref="ErrorType.ValidationError"/> type, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
+    public static Result<T> ValidationError(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.ValidationError)).ToArray();
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.ValidationError };
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Result{T}"/> indicating a validation failure, with specified <see cref="Error"/> objects and an associated value.
+    /// </summary>
+    /// <param name="value">The value of type <typeparamref name="T"/> to be associated with the validation failure result, potentially representing the attempted input.</param>
+    /// <param name="errors">An array of <see cref="Error"/> objects that describe the validation failures.</param>
+    /// <typeparam name="T">The type of the value associated with the operation result.</typeparam>
+    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, the specified value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
+    public static Result<T> ValidationError(T? value, params Error[] errors)
+    {
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.ValidationError };
+    }
+
     /// <summary>
     /// Allows implicit conversion from <see cref="Result{T}"/> to <typeparamref name="T"/>, enabling the value to be used directly.
     /// </summary>

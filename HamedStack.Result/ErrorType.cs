@@ -8,7 +8,7 @@ public enum ErrorType
     /// <summary>
     /// Indicates a general error occurred during the operation.
     /// </summary>
-    Error,
+    Failure,
 
     /// <summary>
     /// Indicates the operation was forbidden due to lack of permissions.
@@ -43,5 +43,10 @@ public enum ErrorType
     /// <summary>
     /// Indicates the operation is unsupported or not implemented.
     /// </summary>
-    Unsupported
+    Unsupported,
+
+    /// <summary>
+    /// Indicates an error due to a data validation failure.
+    /// </summary>
+    ValidationError
 }

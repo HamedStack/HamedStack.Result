@@ -11,9 +11,9 @@ public enum ResultStatus
     Success,
 
     /// <summary>
-    /// Indicates a general error occurred during the operation.
+    /// Indicates a general failure occurred during the operation.
     /// </summary>
-    Error,
+    Failure,
 
     /// <summary>
     /// Indicates the operation was forbidden due to lack of permissions.
@@ -48,5 +48,10 @@ public enum ResultStatus
     /// <summary>
     /// Indicates the operation is unsupported or not implemented.
     /// </summary>
-    Unsupported
+    Unsupported,
+
+    /// <summary>
+    /// Indicates an error due to a data validation failure.
+    /// </summary>
+    ValidationError
 }

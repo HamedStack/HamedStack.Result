@@ -21,7 +21,7 @@ public static class ResultExtensions
     {
         return result.IsSuccess
             ? Result.Success()
-            : Result.Error(result.Errors);
+            : Result.Failure(result.Errors);
     }
 
     public static Result IfFailure(this Result result, Action<Result> action)
@@ -52,6 +52,6 @@ public static class ResultExtensions
         if (!failures.Any()) return Result.Success();
 
         var combinedMessage = string.Join(separator, failures.SelectMany(f => f.Errors).Select(e => e.Message));
-        return Result.Error(combinedMessage);
+        return Result.Failure(combinedMessage);
     }
 }

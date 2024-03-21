@@ -72,24 +72,24 @@ public class Result
     }
 
     /// <summary>
-    /// Creates an error result with one or more error messages.
+    /// Creates an failure result with one or more error messages.
     /// </summary>
     /// <param name="errorMessages">The error messages.</param>
     /// <returns>An error <see cref="Result"/>.</returns>
-    public static Result Error(params string[] errorMessages)
+    public static Result Failure(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Error)).ToArray();
-        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Error };
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Failure)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Failure };
     }
 
     /// <summary>
-    /// Creates an error <see cref="Result"/> instance with the specified errors, indicating a failed operation.
+    /// Creates an failure <see cref="Result"/> instance with the specified errors, indicating a failed operation.
     /// </summary>
     /// <param name="errors">An array of <see cref="Error"/> instances representing the errors encountered during the operation.</param>
     /// <returns>A <see cref="Result"/> instance configured to represent an error state, including the provided error details.</returns>
-    public static Result Error(params Error[] errors)
+    public static Result Failure(params Error[] errors)
     {
-        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Error };
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Failure };
     }
 
     /// <summary>
@@ -236,6 +236,27 @@ public class Result
     public static Result Unsupported(params Error[] errors)
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Result"/> indicating a validation failure with custom error messages.
+    /// </summary>
+    /// <param name="errorMessages">An array of error messages that describe the validation failures.</param>
+    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified error messages wrapped in <see cref="Error"/> objects with a <see cref="ErrorType.ValidationError"/> type, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
+    public static Result ValidationError(params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.ValidationError)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Result"/> indicating a validation failure with specified <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> objects that describe the validation failures.</param>
+    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
+    public static Result ValidationError(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
     }
 
     /// <summary>

@@ -65,29 +65,29 @@ public class PagedResult<T> : Result<T>
     }
 
     /// <summary>
-    /// Creates an error result with the specified value and one or more error messages, without pagination information.
+    /// Creates an failure result with the specified value and one or more error messages, without pagination information.
     /// </summary>
     /// <param name="value">The value associated with the error result.</param>
     /// <param name="errorMessages">The error messages.</param>
     /// <returns>An error <see cref="PagedResult{T}"/>.</returns>
-    public new static PagedResult<T> Error(T? value, params string[] errorMessages)
+    public new static PagedResult<T> Failure(T? value, params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Error)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Failure)).ToArray();
         return new PagedResult<T>
         {
             IsSuccess = false,
-            Status = ResultStatus.Error,
+            Status = ResultStatus.Failure,
             Value = value,
             PagedInfo = null,
             Errors = errors
         };
     }
-    public new static PagedResult<T> Error(T? value, params Error[] errors)
+    public new static PagedResult<T> Failure(T? value, params Error[] errors)
     {
         return new PagedResult<T>
         {
             IsSuccess = false,
-            Status = ResultStatus.Error,
+            Status = ResultStatus.Failure,
             Value = value,
             PagedInfo = null,
             Errors = errors
@@ -285,6 +285,13 @@ public class PagedResult<T> : Result<T>
             Errors = errors
         };
     }
+    /// <summary>
+    /// Creates a new <see cref="PagedResult{T}"/> indicating that the operation is unsupported, with a specified value and an array of errors.
+    /// </summary>
+    /// <param name="value">The value of type <typeparamref name="T"/> associated with this result, which might be the default or a relevant value in the context of the unsupported operation.</param>
+    /// <param name="errors">An array of <see cref="Error"/> objects describing the reasons the operation is unsupported.</param>
+    /// <typeparam name="T">The type of the value associated with the operation result.</typeparam>
+    /// <returns>A <see cref="PagedResult{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, the <c>Status</c> set to <see cref="ResultStatus.Unsupported"/>, the provided value, no pagination information (<c>PagedInfo</c> set to <c>null</c>), and the specified errors.</returns>
     public new static PagedResult<T> Unsupported(T? value, params Error[] errors)
     {
         return new PagedResult<T>
@@ -296,4 +303,44 @@ public class PagedResult<T> : Result<T>
             Errors = errors
         };
     }
+
+    /// <summary>
+    /// Creates a new <see cref="PagedResult{T}"/> indicating a validation failure, with custom error messages and an associated value.
+    /// </summary>
+    /// <param name="value">The value of type <typeparamref name="T"/> associated with the validation failure result, potentially representing the attempted input.</param>
+    /// <param name="errorMessages">An array of error messages that describe the validation failures.</param>
+    /// <typeparam name="T">The type of the value associated with the operation result.</typeparam>
+    /// <returns>A <see cref="PagedResult{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>, the specified value, no pagination information (<c>PagedInfo</c> set to <c>null</c>), and errors generated from the provided messages with a <see cref="ErrorType.ValidationError"/> type.</returns>
+    public new static PagedResult<T> ValidationError(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.ValidationError)).ToArray();
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.ValidationError,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="PagedResult{T}"/> indicating a validation failure, with specified <see cref="Error"/> objects and an associated value.
+    /// </summary>
+    /// <param name="value">The value of type <typeparamref name="T"/> associated with the validation failure result, potentially representing the attempted input.</param>
+    /// <param name="errors">An array of <see cref="Error"/> objects that describe the validation failures.</param>
+    /// <typeparam name="T">The type of the value associated with the operation result.</typeparam>
+    /// <returns>A <see cref="PagedResult{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>, the specified value, no pagination information (<c>PagedInfo</c> set to <c>null</c>), and the provided <see cref="Error"/> objects.</returns>
+    public new static PagedResult<T> ValidationError(T? value, params Error[] errors)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.ValidationError,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
 }
