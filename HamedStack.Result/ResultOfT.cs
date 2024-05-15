@@ -222,5 +222,5 @@ public class Result<T> : Result
     /// </summary>
     /// <param name="value">The value to wrap in a <see cref="Result{T}"/>.</param>
     /// <returns>A <see cref="Result{T}"/> wrapping the provided value.</returns>
-    public static implicit operator Result<T>(T value) => new(value);
+    public static implicit operator Result<T>(T? value) => new(value);
 }

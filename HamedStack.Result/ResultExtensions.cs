@@ -7,6 +7,11 @@ namespace HamedStack.TheResult;
 
 public static class ResultExtensions
 {
+    public static Result<T> AsResult<T>(this Result result)
+    {
+        return (Result<T>)result;
+    }
+
     public static string[] GetErrorMessages(this Result result)
     {
         return result.Errors.Select(e => e.Message).ToArray();

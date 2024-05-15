@@ -18,4 +18,9 @@ public static class PagedResultExtensions
     {
         return result.Errors.Select(e => e.Message).ToArray();
     }
+
+    public static PagedResult<T> AsPagedResult<T>(this Result result)
+    {
+        return (PagedResult<T>)result;
+    }
 }
