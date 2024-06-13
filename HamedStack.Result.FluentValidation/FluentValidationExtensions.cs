@@ -30,7 +30,7 @@ public static class FluentValidationExtensions
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
             errors[i].AddOrUpdateMetadata("AttemptedValue", validationResult.Errors[i].AttemptedValue);
         }
-        return Result.Failure(errors);
+        return Result.ValidationError(errors);
     }
 
     /// <summary>
@@ -56,7 +56,31 @@ public static class FluentValidationExtensions
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
             errors[i].AddOrUpdateMetadata("AttemptedValue", validationResult.Errors[i].AttemptedValue);
         }
-        return Result<T>.Failure(value, errors);
+        return Result<T>.ValidationError(value, errors);
+    }
+
+    /// <summary>
+    /// Converts a ValidationResult into a generic Result object.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to include in the Result object.</typeparam>
+    /// <param name="validationResult">The ValidationResult object to convert.</param>
+    /// <returns>A Result object of type T indicating success with a value and message if the ValidationResult is valid, or containing errors if not.</returns>
+    public static Result<T> ToResult<T>(this ValidationResult validationResult)
+    {
+        if (validationResult.IsValid)
+            return Result<T>.Success(default, string.Empty);
+
+        var errorsCount = validationResult.Errors.Count;
+        var errors = new Error[errorsCount];
+        for (var i = 0; i < errors.Length; i++)
+        {
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+
+            errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
+            errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
+            errors[i].AddOrUpdateMetadata("AttemptedValue", validationResult.Errors[i].AttemptedValue);
+        }
+        return Result<T>.ValidationError(default, errors);
     }
 
     /// <summary>
@@ -83,6 +107,31 @@ public static class FluentValidationExtensions
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
             errors[i].AddOrUpdateMetadata("AttemptedValue", validationResult.Errors[i].AttemptedValue);
         }
-        return PagedResult<T>.Failure(value, errors);
+        return PagedResult<T>.ValidationError(value, errors);
+    }
+
+    /// <summary>
+    /// Converts a ValidationResult into a PagedResult object of type T and paging information.
+    /// </summary>
+    /// <typeparam name="T">The type of the value to include in the PagedResult.</typeparam>
+    /// <param name="validationResult">The ValidationResult object to convert.</param>
+    /// <param name="pagedInfo">The paging information to include in the PagedResult.</param>
+    /// <returns>A PagedResult object of type T indicating success with a value, paging information, and message if the ValidationResult is valid, or containing errors if not.</returns>
+    public static PagedResult<T> ToResult<T>(this ValidationResult validationResult, PagedInfo pagedInfo)
+    {
+        if (validationResult.IsValid)
+            return PagedResult<T>.Success(default, pagedInfo, string.Empty);
+
+        var errorsCount = validationResult.Errors.Count;
+        var errors = new Error[errorsCount];
+        for (var i = 0; i < errors.Length; i++)
+        {
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+
+            errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
+            errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
+            errors[i].AddOrUpdateMetadata("AttemptedValue", validationResult.Errors[i].AttemptedValue);
+        }
+        return PagedResult<T>.ValidationError(default, errors);
     }
 }
