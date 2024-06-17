@@ -15,29 +15,22 @@ public class Result
     protected Result() { }
 
     /// <summary>
-    /// Gets the status of the result, indicating success or the type of failure.
+    /// Gets an array of <see cref="Error"/> instances associated with a failed operation. Each <see cref="Error"/> in the array provides details about a specific error that occurred during the operation.
     /// </summary>
-    /// <value>The status of the result.</value>
-    [JsonInclude]
-    public ResultStatus Status { get; protected set; } = ResultStatus.Success;
+    /// <value>An array of <see cref="Error"/> instances.</value>
+    public Error[] Errors { get; protected set; } = { };
+
+    /// <summary>
+    /// Gets a value indicating whether the result has any metadata associated with it.
+    /// </summary>
+    /// <value><c>true</c> if the result has metadata; otherwise, <c>false</c>.</value>
+    public bool HasMetadata => Metadata.Count > 0;
 
     /// <summary>
     /// Gets a value indicating whether the operation succeeded.
     /// </summary>
     /// <value><c>true</c> if the operation was successful; otherwise, <c>false</c>.</value>
     public bool IsSuccess { get; protected set; } = true;
-
-    /// <summary>
-    /// Gets an array of <see cref="Error"/> instances associated with a failed operation. Each <see cref="Error"/> in the array provides details about a specific error that occurred during the operation.
-    /// </summary>
-    /// <value>An array of <see cref="Error"/> instances.</value>
-    public Error[] Errors { get; protected set; } = new Error[] { };
-
-    /// <summary>
-    /// Gets the success message for a successful operation.
-    /// </summary>
-    /// <value>The success message.</value>
-    public string SuccessMessage { get; protected set; } = string.Empty;
 
     /// <summary>
     /// Gets a dictionary containing additional metadata associated with the result.
@@ -47,28 +40,36 @@ public class Result
     public IDictionary<string, object?> Metadata { get; protected set; } = new Dictionary<string, object?>();
 
     /// <summary>
-    /// Gets a value indicating whether the result has any metadata associated with it.
+    /// Gets the status of the result, indicating success or the type of failure.
     /// </summary>
-    /// <value><c>true</c> if the result has metadata; otherwise, <c>false</c>.</value>
-    public bool HasMetadata => Metadata.Count > 0;
-
+    /// <value>The status of the result.</value>
+    [JsonInclude]
+    public ResultStatus Status { get; protected set; } = ResultStatus.Success;
     /// <summary>
-    /// Creates a success result.
+    /// Gets the success message for a successful operation.
     /// </summary>
-    /// <returns>A success <see cref="Result"/>.</returns>
-    public static Result Success()
+    /// <value>The success message.</value>
+    public string SuccessMessage { get; protected set; } = string.Empty;
+    /// <summary>
+    /// Creates a conflict result with one or more error messages.
+    /// </summary>
+    /// <param name="errorMessages">The error messages indicating why the operation results in a conflict.</param>
+    /// <returns>A conflict <see cref="Result"/>.</returns>
+    public static Result Conflict(params string[] errorMessages)
     {
-        return new Result { IsSuccess = true, Status = ResultStatus.Success };
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
 
     /// <summary>
-    /// Creates a success result with a success message.
+    /// Creates a <see cref="Result"/> instance indicating a conflict in the operation, populated with specified errors.
+    /// This method is used when an operation cannot proceed because of conflicting state or resources.
     /// </summary>
-    /// <param name="successMessage">The success message.</param>
-    /// <returns>A success <see cref="Result"/> with a success message.</returns>
-    public static Result Success(string successMessage)
+    /// <param name="errors">An array of <see cref="Error"/> instances describing specific conflicts encountered.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent a conflict state, including the provided error details.</returns>
+    public static Result Conflict(params Error[] errors)
     {
-        return new Result { IsSuccess = true, Status = ResultStatus.Success, SuccessMessage = successMessage };
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
 
     /// <summary>
@@ -102,6 +103,7 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
+
     /// <summary>
     /// Creates a <see cref="Result"/> instance representing a forbidden operation, populated with the specified errors.
     /// This method is typically used when an operation is not allowed due to security or permission issues, and it provides details about the reasons through the specified errors.
@@ -111,26 +113,6 @@ public class Result
     public static Result Forbidden(params Error[] errors)
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
-    }
-    /// <summary>
-    /// Creates an unauthorized result with one or more error messages.
-    /// </summary>
-    /// <param name="errorMessages">The error messages indicating why the operation is unauthorized.</param>
-    /// <returns>An unauthorized <see cref="Result"/>.</returns>
-    public static Result Unauthorized(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unauthorized)).ToArray();
-        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
-    }
-    /// <summary>
-    /// Creates a <see cref="Result"/> instance indicating an unauthorized operation, populated with specified errors.
-    /// This method is used when an operation cannot proceed because the requester lacks proper authentication.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> instances describing specific authentication failures.</param>
-    /// <returns>A <see cref="Result"/> instance configured to represent an unauthorized state, including the provided error details.</returns>
-    public static Result Unauthorized(params Error[] errors)
-    {
-        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
 
     /// <summary>
@@ -143,6 +125,7 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
     }
+
     /// <summary>
     /// Creates a <see cref="Result"/> instance indicating an invalid operation, populated with specified errors.
     /// This method is used when an operation is rejected due to validation failures or other rules that render the request invalid.
@@ -164,6 +147,7 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
+
     /// <summary>
     /// Creates a <see cref="Result"/> instance indicating that the requested resource was not found, populated with specified errors.
     /// This method is typically used when an operation cannot be completed because a necessary resource is missing.
@@ -176,26 +160,43 @@ public class Result
     }
 
     /// <summary>
-    /// Creates a conflict result with one or more error messages.
+    /// Creates a success result.
     /// </summary>
-    /// <param name="errorMessages">The error messages indicating why the operation results in a conflict.</param>
-    /// <returns>A conflict <see cref="Result"/>.</returns>
-    public static Result Conflict(params string[] errorMessages)
+    /// <returns>A success <see cref="Result"/>.</returns>
+    public static Result Success()
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
-        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
-    }
-    /// <summary>
-    /// Creates a <see cref="Result"/> instance indicating a conflict in the operation, populated with specified errors.
-    /// This method is used when an operation cannot proceed because of conflicting state or resources.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> instances describing specific conflicts encountered.</param>
-    /// <returns>A <see cref="Result"/> instance configured to represent a conflict state, including the provided error details.</returns>
-    public static Result Conflict(params Error[] errors)
-    {
-        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
+        return new Result { IsSuccess = true, Status = ResultStatus.Success };
     }
 
+    /// <summary>
+    /// Creates a success result with a success message.
+    /// </summary>
+    /// <param name="successMessage">The success message.</param>
+    /// <returns>A success <see cref="Result"/> with a success message.</returns>
+    public static Result Success(string successMessage)
+    {
+        return new Result { IsSuccess = true, Status = ResultStatus.Success, SuccessMessage = successMessage };
+    }
+    /// <summary>
+    /// Creates an unauthorized result with one or more error messages.
+    /// </summary>
+    /// <param name="errorMessages">The error messages indicating why the operation is unauthorized.</param>
+    /// <returns>An unauthorized <see cref="Result"/>.</returns>
+    public static Result Unauthorized(params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unauthorized)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
+    /// <summary>
+    /// Creates a <see cref="Result"/> instance indicating an unauthorized operation, populated with specified errors.
+    /// This method is used when an operation cannot proceed because the requester lacks proper authentication.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> instances describing specific authentication failures.</param>
+    /// <returns>A <see cref="Result"/> instance configured to represent an unauthorized state, including the provided error details.</returns>
+    public static Result Unauthorized(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
     /// <summary>
     /// Creates an unavailable result with one or more error messages.
     /// </summary>

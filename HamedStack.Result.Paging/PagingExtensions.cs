@@ -26,7 +26,7 @@ public static class PagingExtensions
     /// </remarks>
     public static PagedResult<IList<T>> ToPagedResult<T>(this PagedList<T> result, string successMessage = "")
     {
-        return PagedResult<IList<T>>.Success(result.Items, new PagedInfo()
+        return PagedResult<IList<T>>.Success(result.Items, new PagedInfo
         {
             FirstItemOnPage = result.FirstItemOnPage,
             HasNextPage = result.HasNextPage,

@@ -1,12 +1,24 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
+// ReSharper disable IdentifierTypo
 
 namespace HamedStack.TheResult;
 
 
+/// <summary>
+/// Provides extension methods for the Result class.
+/// </summary>
 public static class ResultExtensions
 {
+    /// <summary>
+    /// Converts a non-generic <see cref="Result"/> to a <see cref="Result{T}"/> with an optional value.
+    /// </summary>
+    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
+    /// <param name="result">The non-generic result instance.</param>
+    /// <param name="value">The optional value to include in the new result.</param>
+    /// <returns>A new <see cref="Result{T}"/> instance with the same status and errors as the input result.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the result status is not recognized.</exception>
     public static Result<T> AsResult<T>(this Result result, T? value = default)
     {
         return result.Status switch
@@ -25,51 +37,13 @@ public static class ResultExtensions
         };
     }
 
+    /// <summary>
+    /// Gets the error messages from the result.
+    /// </summary>
+    /// <param name="result">The non-generic result instance.</param>
+    /// <returns>An array of error messages.</returns>
     public static string[] GetErrorMessages(this Result result)
     {
         return result.Errors.Select(e => e.Message).ToArray();
-    }
-    public static Result Finally(this Result result, Action<Result> action)
-    {
-        action(result);
-        return result;
-    }
-
-    public static Result Flatten(this Result<Result> result)
-    {
-        return result.IsSuccess
-            ? Result.Success()
-            : Result.Failure(result.Errors);
-    }
-
-    public static Result IfFailure(this Result result, Action<Result> action)
-    {
-        if (!result.IsSuccess) action(result);
-        return result;
-    }
-
-    public static Result IfSuccess(this Result result, Action<Result> action)
-    {
-        if (result.IsSuccess) action(result);
-        return result;
-    }
-
-    public static Result IfSuccess(this Result result, Action action)
-    {
-        if (result.IsSuccess) action();
-        return result;
-    }
-    public static Result IfFailure(this Result result, Action action)
-    {
-        if (!result.IsSuccess) action();
-        return result;
-    }
-    public static Result Join(this IEnumerable<Result> results, string separator = ", ")
-    {
-        var failures = results.Where(r => !r.IsSuccess).ToList();
-        if (!failures.Any()) return Result.Success();
-
-        var combinedMessage = string.Join(separator, failures.SelectMany(f => f.Errors).Select(e => e.Message));
-        return Result.Failure(combinedMessage);
     }
 }

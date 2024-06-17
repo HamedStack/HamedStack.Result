@@ -17,16 +17,226 @@ public class PagedResult<T> : Result<T>
     }
 
     /// <summary>
-    /// Gets or sets the pagination information associated with the paged result.
-    /// </summary>
-    /// <value>The pagination information.</value>
-    [JsonInclude] public PagedInfo? PagedInfo { get; set; }
-
-    /// <summary>
     /// Gets a value indicating whether this paged result contains pagination information.
     /// </summary>
     /// <value><c>true</c> if this instance contains pagination information; otherwise, <c>false</c>.</value>
     public bool HasPagedInfo => PagedInfo is not null;
+
+    /// <summary>
+    /// Gets or sets the pagination information associated with the paged result.
+    /// </summary>
+    /// <value>The pagination information.</value>
+    [JsonInclude] public PagedInfo? PagedInfo { get; set; }
+    /// <summary>
+    /// Creates a conflict result with the specified value and one or more error messages, without pagination information.
+    /// </summary>
+    /// <param name="value">The value associated with the conflict result.</param>
+    /// <param name="errorMessages">The error messages indicating why the operation results in a conflict.</param>
+    /// <returns>A conflict <see cref="PagedResult{T}"/>.</returns>
+    public new static PagedResult<T> Conflict(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Conflict,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Conflict(T? value, params Error[] errors)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Conflict,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Conflict(params string[] errorMessages)
+    {
+        return Conflict(default, errorMessages);
+
+    }
+
+    public new static PagedResult<T> Conflict(params Error[] errors)
+    {
+        return Conflict(default, errors);
+
+    }
+
+    /// <summary>
+    /// Creates an failure result with the specified value and one or more error messages, without pagination information.
+    /// </summary>
+    /// <param name="value">The value associated with the error result.</param>
+    /// <param name="errorMessages">The error messages.</param>
+    /// <returns>An error <see cref="PagedResult{T}"/>.</returns>
+    public new static PagedResult<T> Failure(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Failure)).ToArray();
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Failure,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Failure(T? value, params Error[] errors)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Failure,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Failure(params string[] errorMessages)
+    {
+        return Failure(default, errorMessages);
+    }
+
+    public new static PagedResult<T> Failure(params Error[] errors)
+    {
+        return Failure(default, errors);
+    }
+
+    /// <summary>
+    /// Creates a forbidden result with the specified value and one or more error messages, without pagination information.
+    /// </summary>
+    /// <param name="value">The value associated with the forbidden result.</param>
+    /// <param name="errorMessages">The error messages indicating why the operation is forbidden.</param>
+    /// <returns>A forbidden <see cref="PagedResult{T}"/>.</returns>
+    public new static PagedResult<T> Forbidden(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Forbidden,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Forbidden(T? value, params Error[] errors)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Forbidden,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Forbidden(params string[] errorMessages)
+    {
+        return Forbidden(default, errorMessages);
+    }
+
+    public new static PagedResult<T> Forbidden(params Error[] errors)
+    {
+        return Forbidden(default, errors);
+    }
+
+    /// <summary>
+    /// Creates an invalid result with the specified value and one or more error messages, without pagination information.
+    /// </summary>
+    /// <param name="value">The value associated with the invalid result.</param>
+    /// <param name="errorMessages">The error messages indicating why the operation is invalid.</param>
+    /// <returns>An invalid <see cref="PagedResult{T}"/>.</returns>
+    public new static PagedResult<T> Invalid(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Invalid,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Invalid(T? value, params Error[] errors)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Invalid,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> Invalid(params string[] errorMessages)
+    {
+        return Invalid(default, errorMessages);
+
+    }
+
+    public new static PagedResult<T> Invalid(params Error[] errors)
+    {
+        return Invalid(default, errors);
+
+    }
+
+    /// <summary>
+    /// Creates a not found result with the specified value and one or more error messages, without pagination information.
+    /// </summary>
+    /// <param name="value">The value associated with the not found result.</param>
+    /// <param name="errorMessages">The error messages indicating the target of the operation was not found.</param>
+    /// <returns>A not found <see cref="PagedResult{T}"/>.</returns>
+    public new static PagedResult<T> NotFound(T? value, params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.NotFound,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> NotFound(T? value, params Error[] errors)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.NotFound,
+            Value = value,
+            PagedInfo = null,
+            Errors = errors
+        };
+    }
+
+    public new static PagedResult<T> NotFound(params string[] errorMessages)
+    {
+        return NotFound(default, errorMessages);
+
+    }
+
+    public new static PagedResult<T> NotFound(params Error[] errors)
+    {
+        return NotFound(default, errors);
+
+    }
 
     /// <summary>
     /// Creates a success result with the specified value and pagination information.
@@ -63,65 +273,6 @@ public class PagedResult<T> : Result<T>
             PagedInfo = pagedInfo
         };
     }
-
-    /// <summary>
-    /// Creates an failure result with the specified value and one or more error messages, without pagination information.
-    /// </summary>
-    /// <param name="value">The value associated with the error result.</param>
-    /// <param name="errorMessages">The error messages.</param>
-    /// <returns>An error <see cref="PagedResult{T}"/>.</returns>
-    public new static PagedResult<T> Failure(T? value, params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Failure)).ToArray();
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Failure,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
-    public new static PagedResult<T> Failure(T? value, params Error[] errors)
-    {
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Failure,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
-    /// <summary>
-    /// Creates a forbidden result with the specified value and one or more error messages, without pagination information.
-    /// </summary>
-    /// <param name="value">The value associated with the forbidden result.</param>
-    /// <param name="errorMessages">The error messages indicating why the operation is forbidden.</param>
-    /// <returns>A forbidden <see cref="PagedResult{T}"/>.</returns>
-    public new static PagedResult<T> Forbidden(T? value, params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Forbidden,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
-    public new static PagedResult<T> Forbidden(T? value, params Error[] errors)
-    {
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Forbidden,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
     /// <summary>
     /// Creates an unauthorized result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -151,93 +302,18 @@ public class PagedResult<T> : Result<T>
             Errors = errors
         };
     }
-    /// <summary>
-    /// Creates an invalid result with the specified value and one or more error messages, without pagination information.
-    /// </summary>
-    /// <param name="value">The value associated with the invalid result.</param>
-    /// <param name="errorMessages">The error messages indicating why the operation is invalid.</param>
-    /// <returns>An invalid <see cref="PagedResult{T}"/>.</returns>
-    public new static PagedResult<T> Invalid(T? value, params string[] errorMessages)
+    public new static PagedResult<T> Unauthorized(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Invalid,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
+        return Unauthorized(default, errorMessages);
+
     }
-    public new static PagedResult<T> Invalid(T? value, params Error[] errors)
+
+    public new static PagedResult<T> Unauthorized(params Error[] errors)
     {
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Invalid,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
+        return Unauthorized(default, errors);
+
     }
-    /// <summary>
-    /// Creates a not found result with the specified value and one or more error messages, without pagination information.
-    /// </summary>
-    /// <param name="value">The value associated with the not found result.</param>
-    /// <param name="errorMessages">The error messages indicating the target of the operation was not found.</param>
-    /// <returns>A not found <see cref="PagedResult{T}"/>.</returns>
-    public new static PagedResult<T> NotFound(T? value, params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.NotFound,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
-    public new static PagedResult<T> NotFound(T? value, params Error[] errors)
-    {
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.NotFound,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
-    /// <summary>
-    /// Creates a conflict result with the specified value and one or more error messages, without pagination information.
-    /// </summary>
-    /// <param name="value">The value associated with the conflict result.</param>
-    /// <param name="errorMessages">The error messages indicating why the operation results in a conflict.</param>
-    /// <returns>A conflict <see cref="PagedResult{T}"/>.</returns>
-    public new static PagedResult<T> Conflict(T? value, params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Conflict,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
-    public new static PagedResult<T> Conflict(T? value, params Error[] errors)
-    {
-        return new PagedResult<T>
-        {
-            IsSuccess = false,
-            Status = ResultStatus.Conflict,
-            Value = value,
-            PagedInfo = null,
-            Errors = errors
-        };
-    }
+
     /// <summary>
     /// Creates an unavailable result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -267,6 +343,18 @@ public class PagedResult<T> : Result<T>
             Errors = errors
         };
     }
+    public new static PagedResult<T> Unavailable(params string[] errorMessages)
+    {
+        return Unavailable(default, errorMessages);
+
+    }
+
+    public new static PagedResult<T> Unavailable(params Error[] errors)
+    {
+        return Unavailable(default, errors);
+
+    }
+
     /// <summary>
     /// Creates an unsupported result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -302,6 +390,18 @@ public class PagedResult<T> : Result<T>
             PagedInfo = null,
             Errors = errors
         };
+    }
+
+    public new static PagedResult<T> Unsupported(params string[] errorMessages)
+    {
+        return Unsupported(default, errorMessages);
+
+    }
+
+    public new static PagedResult<T> Unsupported(params Error[] errors)
+    {
+        return Unsupported(default, errors);
+
     }
 
     /// <summary>
@@ -342,5 +442,14 @@ public class PagedResult<T> : Result<T>
             Errors = errors
         };
     }
+    public new static PagedResult<T> ValidationError(params string[] errorMessages)
+    {
+        return ValidationError(default, errorMessages);
 
+    }
+
+    public new static PagedResult<T> ValidationError(params Error[] errors)
+    {
+        return ValidationError(default, errors);
+    }
 }
