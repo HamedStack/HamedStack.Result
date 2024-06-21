@@ -33,57 +33,6 @@ public static class ResultOfTExtensions
     {
         return result.Errors.Select(e => e.Message).ToArray();
     }
-    /// <summary>
-    /// Executes an action if the result is a failure.
-    /// </summary>
-    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The input result.</param>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The original result.</returns>
-    public static Result<T> IfFailure<T>(this Result<T> result, Action<Result<T>> action)
-    {
-        if (!result.IsSuccess) action(result);
-        return result;
-    }
-
-    /// <summary>
-    /// Executes an action if the result is a failure.
-    /// </summary>
-    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The input result.</param>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The original result.</returns>
-    public static Result<T> IfFailure<T>(this Result<T> result, Action action)
-    {
-        if (!result.IsSuccess) action();
-        return result;
-    }
-
-    /// <summary>
-    /// Executes an action if the result is successful.
-    /// </summary>
-    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The input result.</param>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The original result.</returns>
-    public static Result<T> IfSuccess<T>(this Result<T> result, Action<Result<T>> action)
-    {
-        if (result.IsSuccess) action(result);
-        return result;
-    }
-
-    /// <summary>
-    /// Executes an action if the result is successful.
-    /// </summary>
-    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
-    /// <param name="result">The input result.</param>
-    /// <param name="action">The action to execute.</param>
-    /// <returns>The original result.</returns>
-    public static Result<T> IfSuccess<T>(this Result<T> result, Action action)
-    {
-        if (result.IsSuccess) action();
-        return result;
-    }
 
     /// <summary>
     /// Maps the value of the result to a new result, preserving the original result status.
@@ -142,6 +91,19 @@ public static class ResultOfTExtensions
     }
 
     /// <summary>
+    /// Executes a specified action if the result indicates a failure and returns the original result.
+    /// </summary>
+    /// <typeparam name="TIn">The type of the value stored in the result.</typeparam>
+    /// <param name="result">The result object to be checked for success or failure.</param>
+    /// <param name="actionOnFailure">The action to execute if the result indicates a failure.</param>
+    /// <returns>The original result object.</returns>
+    public static Result<TIn> TapError<TIn>(this Result<TIn> result, Action actionOnFailure)
+    {
+        if (!result.IsSuccess) actionOnFailure();
+        return result;
+    }
+
+    /// <summary>
     /// Tries to apply a function to the result, catching any exceptions and converting them to a failure result.
     /// </summary>
     /// <typeparam name="TIn">The type of the input value.</typeparam>
@@ -178,6 +140,24 @@ public static class ResultOfTExtensions
         return result.TryCatch(func, new Error(errorType.ToString(), errorType));
     }
 
+    /// <summary>
+    /// Tries to apply a function to the result, catching any exceptions and converting them to a failure result with the specified error type, message, and optional error code.
+    /// </summary>
+    /// <typeparam name="TIn">The type of the input value.</typeparam>
+    /// <typeparam name="TOut">The type of the output value.</typeparam>
+    /// <param name="result">The input result.</param>
+    /// <param name="func">The function to apply to the input result.</param>
+    /// <param name="errorType">The error type to use if an exception is thrown.</param>
+    /// <param name="errorMessage">The error message to use if an exception is thrown.</param>
+    /// <param name="errorCode">The optional error code to use if an exception is thrown.</param>
+    /// <returns>A new result of type <see cref="Result{TOut}"/>.</returns>
+    public static Result<TOut> TryCatch<TIn, TOut>(this Result<TIn> result, Func<TIn?, Result<TOut>> func, ErrorType errorType, string errorMessage, string? errorCode = null)
+    {
+        return result.TryCatch(func, string.IsNullOrWhiteSpace(errorCode) 
+            ? new Error(errorMessage, errorType) 
+            : new Error(errorMessage, errorCode, errorType));
+    }
+    
     /// <summary>
     /// Unwraps the result value or returns a default value if the result is a failure.
     /// </summary>
