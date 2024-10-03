@@ -25,8 +25,8 @@ public static class ResultExtensions
             ResultStatus.Invalid => new BadRequestObjectResult(result),
             ResultStatus.NotFound => new NotFoundObjectResult(result),
             ResultStatus.Conflict => new ConflictObjectResult(result),
-            ResultStatus.Unsupported => new StatusCodeResult(501),
-            ResultStatus.Unavailable => new StatusCodeResult(503),
+            ResultStatus.Unsupported => new ObjectResult(result) { StatusCode = 501 },
+            ResultStatus.Unavailable => new ObjectResult(result) { StatusCode = 503 },
             ResultStatus.ValidationError => new BadRequestObjectResult(result),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
@@ -48,8 +48,8 @@ public static class ResultExtensions
             ResultStatus.Invalid => new BadRequestObjectResult(result),
             ResultStatus.NotFound => new NotFoundObjectResult(result),
             ResultStatus.Conflict => new ConflictObjectResult(result),
-            ResultStatus.Unavailable => new StatusCodeResult(503),
-            ResultStatus.Unsupported => new StatusCodeResult(501),
+            ResultStatus.Unsupported => new ObjectResult(result) { StatusCode = 501 },
+            ResultStatus.Unavailable => new ObjectResult(result) { StatusCode = 503 },
             ResultStatus.ValidationError => new BadRequestObjectResult(result),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
