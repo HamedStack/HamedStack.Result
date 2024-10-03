@@ -18,6 +18,13 @@ public class ResultExceptionMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger<ResultExceptionMiddleware> _logger;
     private readonly IWebHostEnvironment _env;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResultExceptionMiddleware"/> class.
+    /// </summary>
+    /// <param name="next">The next middleware in the request pipeline.</param>
+    /// <param name="logger">The logger instance used for logging exceptions.</param>
+    /// <param name="env">The hosting environment to determine the environment mode (Development, Production, etc.).</param>
     public ResultExceptionMiddleware(RequestDelegate next, ILogger<ResultExceptionMiddleware> logger, IWebHostEnvironment env)
     {
         _next = next;
