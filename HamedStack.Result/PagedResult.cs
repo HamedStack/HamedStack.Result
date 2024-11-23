@@ -70,6 +70,23 @@ public class PagedResult<T> : Result<T>
 
     }
 
+    public new static PagedResult<T> Conflict(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Conflict,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Conflict)]
+        };
+    }
+
+    public new static PagedResult<T> Conflict(Exception exception)
+    {
+        return Conflict(default, exception);
+    }
+
     /// <summary>
     /// Creates an failure result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -111,6 +128,23 @@ public class PagedResult<T> : Result<T>
         return Failure(default, errors);
     }
 
+    public new static PagedResult<T> Failure(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Failure,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Failure)]
+        };
+    }
+
+    public new static PagedResult<T> Failure(Exception exception)
+    {
+        return Conflict(default, exception);
+    }
+
     /// <summary>
     /// Creates a forbidden result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -150,6 +184,23 @@ public class PagedResult<T> : Result<T>
     public new static PagedResult<T> Forbidden(params Error[] errors)
     {
         return Forbidden(default, errors);
+    }
+
+    public new static PagedResult<T> Forbidden(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Forbidden,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Forbidden)]
+        };
+    }
+
+    public new static PagedResult<T> Forbidden(Exception exception)
+    {
+        return Forbidden(default, exception);
     }
 
     /// <summary>
@@ -195,6 +246,23 @@ public class PagedResult<T> : Result<T>
 
     }
 
+    public new static PagedResult<T> Invalid(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Invalid,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Invalid)]
+        };
+    }
+
+    public new static PagedResult<T> Invalid(Exception exception)
+    {
+        return Invalid(default, exception);
+    }
+
     /// <summary>
     /// Creates a not found result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -235,7 +303,23 @@ public class PagedResult<T> : Result<T>
     public new static PagedResult<T> NotFound(params Error[] errors)
     {
         return NotFound(default, errors);
+    }
 
+    public new static PagedResult<T> NotFound(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.NotFound,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.NotFound)]
+        };
+    }
+
+    public new static PagedResult<T> NotFound(Exception exception)
+    {
+        return NotFound(default, exception);
     }
 
     /// <summary>
@@ -314,6 +398,23 @@ public class PagedResult<T> : Result<T>
 
     }
 
+    public new static PagedResult<T> Unauthorized(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Unauthorized,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Unauthorized)]
+        };
+    }
+
+    public new static PagedResult<T> Unauthorized(Exception exception)
+    {
+        return Unauthorized(default, exception);
+    }
+
     /// <summary>
     /// Creates an unavailable result with the specified value and one or more error messages, without pagination information.
     /// </summary>
@@ -353,6 +454,23 @@ public class PagedResult<T> : Result<T>
     {
         return Unavailable(default, errors);
 
+    }
+
+    public new static PagedResult<T> Unavailable(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Unavailable,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Unavailable)]
+        };
+    }
+
+    public new static PagedResult<T> Unavailable(Exception exception)
+    {
+        return Unavailable(default, exception);
     }
 
     /// <summary>
@@ -404,6 +522,23 @@ public class PagedResult<T> : Result<T>
 
     }
 
+    public new static PagedResult<T> Unsupported(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.Unsupported,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.Unsupported)]
+        };
+    }
+
+    public new static PagedResult<T> Unsupported(Exception exception)
+    {
+        return Unsupported(default, exception);
+    }
+
     /// <summary>
     /// Creates a new <see cref="PagedResult{T}"/> indicating a validation failure, with custom error messages and an associated value.
     /// </summary>
@@ -451,5 +586,22 @@ public class PagedResult<T> : Result<T>
     public new static PagedResult<T> ValidationError(params Error[] errors)
     {
         return ValidationError(default, errors);
+    }
+
+    public new static PagedResult<T> ValidationError(T? value, Exception exception)
+    {
+        return new PagedResult<T>
+        {
+            IsSuccess = false,
+            Status = ResultStatus.ValidationError,
+            Value = value,
+            PagedInfo = null,
+            Errors = [new Error(exception.Message, ErrorType.ValidationError)]
+        };
+    }
+
+    public new static PagedResult<T> ValidationError(Exception exception)
+    {
+        return ValidationError(default, exception);
     }
 }

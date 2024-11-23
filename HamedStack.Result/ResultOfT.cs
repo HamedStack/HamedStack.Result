@@ -52,6 +52,12 @@ public class Result<T> : Result
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Conflict };
     }
 
+    public static Result<T> Conflict(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Conflict) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Conflict };
+    }
+
     public static Result<T> Conflict(params string[] errorMessages)
     {
         return Conflict(default, errorMessages);
@@ -60,6 +66,12 @@ public class Result<T> : Result
     public static Result<T> Conflict(params Error[] errors)
     {
         return Conflict(default, errors);
+    }
+
+    public static Result<T> Conflict(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Conflict) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Conflict };
     }
 
     /// <summary>
@@ -89,6 +101,18 @@ public class Result<T> : Result
         return Failure(default, errors);
     }
 
+    public static Result<T> Failure(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Failure) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Failure };
+    }
+
+    public static Result<T> Failure(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Failure) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Failure };
+    }
+
     /// <summary>
     /// Creates a forbidden result with the specified value and one or more error messages.
     /// </summary>
@@ -114,6 +138,18 @@ public class Result<T> : Result
     public static Result<T> Forbidden(params Error[] errors)
     {
         return Forbidden(default, errors);
+    }
+
+    public static Result<T> Forbidden(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Forbidden) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Forbidden };
+    }
+
+    public static Result<T> Forbidden(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Forbidden) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Forbidden };
     }
 
     /// <summary>
@@ -157,6 +193,18 @@ public class Result<T> : Result
         return Invalid(default, errors);
     }
 
+    public static Result<T> Invalid(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Invalid) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Invalid };
+    }
+
+    public static Result<T> Invalid(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Invalid) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Invalid };
+    }
+
     /// <summary>
     /// Creates a not found result with the specified value and one or more error messages.
     /// </summary>
@@ -184,6 +232,18 @@ public class Result<T> : Result
         return NotFound(default, errors);
     }
 
+    public static Result<T> NotFound(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.NotFound) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.NotFound };
+    }
+
+    public static Result<T> NotFound(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.NotFound) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.NotFound };
+    }
+
     /// <summary>
     /// Creates a success result with the specified value.
     /// </summary>
@@ -204,6 +264,7 @@ public class Result<T> : Result
     {
         return new Result<T> { IsSuccess = true, Value = value, SuccessMessage = successMessage, Status = ResultStatus.Success };
     }
+
     /// <summary>
     /// Creates an unauthorized result with the specified value and one or more error messages.
     /// </summary>
@@ -229,6 +290,18 @@ public class Result<T> : Result
         return Unauthorized(default, errors);
     }
 
+    public static Result<T> Unauthorized(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Unauthorized) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
+
+    public static Result<T> Unauthorized(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Unauthorized) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
+
     /// <summary>
     /// Creates an unavailable result with the specified value and one or more error messages.
     /// </summary>
@@ -252,6 +325,18 @@ public class Result<T> : Result
     public static Result<T> Unavailable(params Error[] errors)
     {
         return Unavailable(default, errors);
+    }
+
+    public static Result<T> Unavailable(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Unavailable) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unavailable };
+    }
+
+    public static Result<T> Unavailable(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Unavailable) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unavailable };
     }
 
     /// <summary>
@@ -287,6 +372,18 @@ public class Result<T> : Result
         return Unsupported(default, errors);
     }
 
+    public static Result<T> Unsupported(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Unsupported) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unsupported };
+    }
+
+    public static Result<T> Unsupported(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.Unsupported) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unsupported };
+    }
+
     /// <summary>
     /// Creates a <see cref="Result{T}"/> indicating a validation failure, with custom error messages and an associated value.
     /// </summary>
@@ -319,5 +416,17 @@ public class Result<T> : Result
     public static Result<T> ValidationError(params Error[] errors)
     {
         return ValidationError(default, errors);
+    }
+
+    public static Result<T> ValidationError(T? value, Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.ValidationError) };
+        return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.ValidationError };
+    }
+
+    public static Result<T> ValidationError(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message, ErrorType.ValidationError) };
+        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.ValidationError };
     }
 }
