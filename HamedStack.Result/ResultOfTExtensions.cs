@@ -127,20 +127,6 @@ public static class ResultOfTExtensions
     }
 
     /// <summary>
-    /// Tries to apply a function to the result, catching any exceptions and converting them to a failure result with the specified error type.
-    /// </summary>
-    /// <typeparam name="TIn">The type of the input value.</typeparam>
-    /// <typeparam name="TOut">The type of the output value.</typeparam>
-    /// <param name="result">The input result.</param>
-    /// <param name="func">The function to apply.</param>
-    /// <param name="errorType">The error type to use if an exception is thrown.</param>
-    /// <returns>A new result of type <see cref="Result{TOut}"/>.</returns>
-    public static Result<TOut> TryCatch<TIn, TOut>(this Result<TIn> result, Func<TIn?, Result<TOut>> func, ErrorType errorType)
-    {
-        return result.TryCatch(func, new Error(errorType.ToString(), errorType));
-    }
-
-    /// <summary>
     /// Tries to apply a function to the result, catching any exceptions and converting them to a failure result with the specified error type, message, and optional error code.
     /// </summary>
     /// <typeparam name="TIn">The type of the input value.</typeparam>
@@ -151,11 +137,11 @@ public static class ResultOfTExtensions
     /// <param name="errorMessage">The error message to use if an exception is thrown.</param>
     /// <param name="errorCode">The optional error code to use if an exception is thrown.</param>
     /// <returns>A new result of type <see cref="Result{TOut}"/>.</returns>
-    public static Result<TOut> TryCatch<TIn, TOut>(this Result<TIn> result, Func<TIn?, Result<TOut>> func, ErrorType errorType, string errorMessage, string? errorCode = null)
+    public static Result<TOut> TryCatch<TIn, TOut>(this Result<TIn> result, Func<TIn?, Result<TOut>> func, string errorMessage, string? errorCode = null)
     {
         return result.TryCatch(func, string.IsNullOrWhiteSpace(errorCode) 
-            ? new Error(errorMessage, errorType) 
-            : new Error(errorMessage, errorCode, errorType));
+            ? new Error(errorMessage) 
+            : new Error(errorMessage, errorCode));
     }
     
     /// <summary>

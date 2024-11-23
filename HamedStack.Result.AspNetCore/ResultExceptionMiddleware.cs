@@ -48,11 +48,11 @@ public class ResultExceptionMiddleware
             _logger.LogError(ex, ex.Message);
 
             var errorMessage = _env.IsDevelopment() ? ex.Message : "An unexpected error occurred on the server.";
-            var error = new Error(errorMessage, ErrorType.Failure);
-            var result = Result.Failure(error);
+            var error = new Error(errorMessage);
+            var result = Result.CriticalError(error);
 
             var traceId = Activity.Current?.Id ?? context.TraceIdentifier;
-            result.AddOrUpdateMetadata("TraceId", traceId);
+            result.CorrelationId = traceId;
             
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

@@ -53,5 +53,11 @@ public enum ResultStatus
     /// <summary>
     /// Indicates an error due to a data validation failure.
     /// </summary>
-    ValidationError
+    ValidationError,
+
+    /// <summary>
+    /// Indicates a critical error occurred, requiring immediate attention.
+    /// This may include system-level failures, unhandled exceptions, or severe infrastructure issues.
+    /// </summary>
+    CriticalError
 }

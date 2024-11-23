@@ -15,11 +15,9 @@ public class Error
     /// Initializes a new instance of the <see cref="Error"/> class with the specified error message and type.
     /// </summary>
     /// <param name="message">The message that describes the error.</param>
-    /// <param name="errorType">The type of error.</param>
-    public Error(string message, ErrorType errorType)
+    public Error(string message)
     {
         Message = message;
-        ErrorType = errorType;
     }
 
     /// <summary>
@@ -27,19 +25,11 @@ public class Error
     /// </summary>
     /// <param name="message">The message that describes the error.</param>
     /// <param name="code">The code associated with the error.</param>
-    /// <param name="errorType">The type of error.</param>
-    public Error(string message, string code, ErrorType errorType)
+    public Error(string message, string code)
     {
         Message = message;
         Code = code;
-        ErrorType = errorType;
     }
-
-    /// <summary>
-    /// Gets or sets the type of error.
-    /// </summary>
-    /// <value>The type of error.</value>
-    public ErrorType ErrorType { get; set; }
 
     /// <summary>
     /// Gets or sets the message that describes the current error.

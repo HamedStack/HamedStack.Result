@@ -13,7 +13,7 @@ namespace HamedStack.TheResult.AspNetCore;
 public static class ResultModelStateExtensions
 {
     /// <summary>
-    /// Transforms a <see cref="ModelStateDictionary"/> instance into a <see cref="modelState"/> object.
+    /// Transforms a <see cref="ModelStateDictionary"/> instance.
     /// </summary>
     /// <param name="modelState">The ModelStateDictionary instance.</param>
     /// <returns>A <see cref="Result"/> instance that represents the validation outcome.</returns>

@@ -37,14 +37,7 @@ public class Result
     /// This can be used for tracking and debugging operations.
     /// </summary>
     /// <value>A string representing the correlation ID.</value>
-    public string CorrelationId { get; protected set; } = string.Empty;
-
-    /// <summary>
-    /// Gets the location associated with the result, which can provide additional context.
-    /// For example, it may indicate the source of the operation or a target endpoint.
-    /// </summary>
-    /// <value>A string representing the location.</value>
-    public string Location { get; protected set; } = string.Empty;
+    public string? CorrelationId { get; set; }
 
     /// <summary>
     /// Gets a dictionary containing additional metadata associated with the result.
@@ -71,7 +64,7 @@ public class Result
     /// <returns>A conflict <see cref="Result"/>.</returns>
     public static Result Conflict(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Conflict)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
 
@@ -93,7 +86,7 @@ public class Result
     /// <returns>A conflict <see cref="Result"/>.</returns>
     public static Result Conflict(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Conflict) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
 
@@ -104,7 +97,7 @@ public class Result
     /// <returns>An error <see cref="Result"/>.</returns>
     public static Result Failure(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Failure)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Failure };
     }
 
@@ -125,7 +118,7 @@ public class Result
     /// <returns>A failure <see cref="Result"/>.</returns>
     public static Result Failure(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Failure) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Failure };
     }
 
@@ -136,7 +129,7 @@ public class Result
     /// <returns>A forbidden <see cref="Result"/>.</returns>
     public static Result Forbidden(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Forbidden)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
 
@@ -158,7 +151,7 @@ public class Result
     /// <returns>A forbidden <see cref="Result"/>.</returns>
     public static Result Forbidden(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Forbidden) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
 
@@ -169,7 +162,7 @@ public class Result
     /// <returns>An invalid <see cref="Result"/>.</returns>
     public static Result Invalid(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Invalid)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
     }
 
@@ -191,7 +184,7 @@ public class Result
     /// <returns>An invalid <see cref="Result"/>.</returns>
     public static Result Invalid(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Invalid) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
     }
 
@@ -202,7 +195,7 @@ public class Result
     /// <returns>A not found <see cref="Result"/>.</returns>
     public static Result NotFound(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.NotFound)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
 
@@ -224,7 +217,7 @@ public class Result
     /// <returns>A not found <see cref="Result"/>.</returns>
     public static Result NotFound(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.NotFound) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
 
@@ -253,7 +246,7 @@ public class Result
     /// <returns>An unauthorized <see cref="Result"/>.</returns>
     public static Result Unauthorized(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unauthorized)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
     /// <summary>
@@ -274,7 +267,7 @@ public class Result
     /// <returns>An unauthorized <see cref="Result"/>.</returns>
     public static Result Unauthorized(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Unauthorized) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
 
@@ -285,7 +278,7 @@ public class Result
     /// <returns>An unavailable <see cref="Result"/>.</returns>
     public static Result Unavailable(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unavailable)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
     }
     /// <summary>
@@ -306,7 +299,7 @@ public class Result
     /// <returns>An unavailable <see cref="Result"/>.</returns>
     public static Result Unavailable(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Unavailable) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
     }
 
@@ -317,7 +310,7 @@ public class Result
     /// <returns>An unsupported <see cref="Result"/>.</returns>
     public static Result Unsupported(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.Unsupported)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
     }
     /// <summary>
@@ -338,7 +331,7 @@ public class Result
     /// <returns>An unsupported <see cref="Result"/>.</returns>
     public static Result Unsupported(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.Unsupported) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
     }
 
@@ -349,7 +342,7 @@ public class Result
     /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified error messages wrapped in <see cref="Error"/> objects with a <see cref="ErrorType.ValidationError"/> type, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
     public static Result ValidationError(params string[] errorMessages)
     {
-        var errors = errorMessages.Select(e => new Error(e, ErrorType.ValidationError)).ToArray();
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
     }
 
@@ -370,8 +363,40 @@ public class Result
     /// <returns>A validation error <see cref="Result"/>.</returns>
     public static Result ValidationError(Exception exception)
     {
-        var errors = new[] { new Error(exception.Message, ErrorType.ValidationError) };
+        var errors = new[] { new Error(exception.Message) };
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Result"/> indicating a critical error with custom error messages.
+    /// </summary>
+    /// <param name="errorMessages">An array of error messages that describe the critical errors encountered.</param>
+    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified error messages wrapped in <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.CriticalError"/>.</returns>
+    public static Result CriticalError(params string[] errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.CriticalError };
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Result"/> indicating a critical error with specified <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">An array of <see cref="Error"/> objects that describe the critical errors encountered.</param>
+    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.CriticalError"/>.</returns>
+    public static Result CriticalError(params Error[] errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.CriticalError };
+    }
+
+    /// <summary>
+    /// Creates a <see cref="Result"/> indicating a critical error caused by an exception.
+    /// </summary>
+    /// <param name="exception">The exception that triggered the critical error.</param>
+    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing an <see cref="Error"/> object with the exception's message, and the <c>Status</c> set to <see cref="ResultStatus.CriticalError"/>.</returns>
+    public static Result CriticalError(Exception exception)
+    {
+        var errors = new[] { new Error(exception.Message) };
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.CriticalError };
     }
 
     /// <summary>

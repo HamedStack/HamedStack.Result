@@ -24,7 +24,7 @@ public static class FluentValidationExtensions
         var errors = new Error[errorsCount];
         for (var i = 0; i < errors.Length; i++)
         {
-            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode);
 
             errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
@@ -50,7 +50,7 @@ public static class FluentValidationExtensions
         var errors = new Error[errorsCount];
         for (var i = 0; i < errors.Length; i++)
         {
-            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode);
 
             errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
@@ -74,7 +74,7 @@ public static class FluentValidationExtensions
         var errors = new Error[errorsCount];
         for (var i = 0; i < errors.Length; i++)
         {
-            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode);
 
             errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
@@ -101,7 +101,7 @@ public static class FluentValidationExtensions
         var errors = new Error[errorsCount];
         for (var i = 0; i < errors.Length; i++)
         {
-            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode);
 
             errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
@@ -126,7 +126,7 @@ public static class FluentValidationExtensions
         var errors = new Error[errorsCount];
         for (var i = 0; i < errors.Length; i++)
         {
-            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode, ErrorType.ValidationError);
+            errors[i] = new Error(validationResult.Errors[i].ErrorMessage, validationResult.Errors[i].ErrorCode);
 
             errors[i].AddOrUpdateMetadata("Severity", validationResult.Errors[i].Severity);
             errors[i].AddOrUpdateMetadata("PropertyName", validationResult.Errors[i].PropertyName);
