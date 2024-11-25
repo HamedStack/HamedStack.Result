@@ -1,5 +1,6 @@
 ﻿// ReSharper disable UnusedMember.Global
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HamedStack.TheResult.AspNetCore;
@@ -74,6 +75,80 @@ public static class ResultExtensions
             ResultStatus.Unsupported => new ObjectResult(result) { StatusCode = 501 },
             ResultStatus.Unavailable => new ObjectResult(result) { StatusCode = 503 },
             ResultStatus.ValidationError => new BadRequestObjectResult(result),
+            _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
+        };
+    }
+
+    /// <summary>
+    /// Converts a <see cref="Result"/> instance to an appropriate <see cref="IResult"/> for Minimal APIs.
+    /// </summary>
+    /// <param name="result">The result to convert.</param>
+    /// <returns>An <see cref="IResult"/> corresponding to the status of the <paramref name="result"/>.</returns>
+    /// <exception cref="NotSupportedException">Thrown when the result status is unknown or unsupported.</exception>
+    public static IResult ToMinimalApiResult<T>(this Result result)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Success => Results.Ok(result),
+            ResultStatus.Failure => Results.BadRequest(result),
+            ResultStatus.Forbidden => Results.Forbid(),
+            ResultStatus.Unauthorized => Results.Unauthorized(),
+            ResultStatus.Invalid => Results.BadRequest(result),
+            ResultStatus.NotFound => Results.NotFound(result),
+            ResultStatus.Conflict => Results.Conflict(result),
+            ResultStatus.Unsupported => Results.Json(result, statusCode: 501),
+            ResultStatus.Unavailable => Results.Json(result, statusCode: 503),
+            ResultStatus.ValidationError => Results.BadRequest(result),
+            _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
+        };
+    }
+
+    /// <summary>
+    /// Converts a <see cref="Result{T}"/> instance to an appropriate <see cref="IResult"/> for Minimal APIs.
+    /// </summary>
+    /// <typeparam name="T">The type of the value contained in the result.</typeparam>
+    /// <param name="result">The result to convert.</param>
+    /// <returns>An <see cref="IResult"/> corresponding to the status of the <paramref name="result"/>.</returns>
+    /// <exception cref="NotSupportedException">Thrown when the result status is unknown or unsupported.</exception>
+    public static IResult ToMinimalApiResult<T>(this Result<T> result)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Success => Results.Ok(result),
+            ResultStatus.Failure => Results.BadRequest(result),
+            ResultStatus.Forbidden => Results.Forbid(),
+            ResultStatus.Unauthorized => Results.Unauthorized(),
+            ResultStatus.Invalid => Results.BadRequest(result),
+            ResultStatus.NotFound => Results.NotFound(result),
+            ResultStatus.Conflict => Results.Conflict(result),
+            ResultStatus.Unsupported => Results.Json(result, statusCode: 501),
+            ResultStatus.Unavailable => Results.Json(result, statusCode: 503),
+            ResultStatus.ValidationError => Results.BadRequest(result),
+            _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
+        };
+    }
+
+    /// <summary>
+    /// Converts a <see cref="PagedResult{T}"/> instance to an appropriate <see cref="IResult"/> for Minimal APIs.
+    /// </summary>
+    /// <typeparam name="T">The type of the paged data contained in the result.</typeparam>
+    /// <param name="result">The paged result to convert.</param>
+    /// <returns>An <see cref="IResult"/> corresponding to the status of the <paramref name="result"/>.</returns>
+    /// <exception cref="NotSupportedException">Thrown when the result status is unknown or unsupported.</exception>
+    public static IResult ToMinimalApiResult<T>(this PagedResult<T> result)
+    {
+        return result.Status switch
+        {
+            ResultStatus.Success => Results.Ok(result),
+            ResultStatus.Failure => Results.BadRequest(result),
+            ResultStatus.Forbidden => Results.Forbid(),
+            ResultStatus.Unauthorized => Results.Unauthorized(),
+            ResultStatus.Invalid => Results.BadRequest(result),
+            ResultStatus.NotFound => Results.NotFound(result),
+            ResultStatus.Conflict => Results.Conflict(result),
+            ResultStatus.Unsupported => Results.Json(result, statusCode: 501),
+            ResultStatus.Unavailable => Results.Json(result, statusCode: 503),
+            ResultStatus.ValidationError => Results.BadRequest(result),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
