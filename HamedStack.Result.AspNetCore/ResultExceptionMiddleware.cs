@@ -53,10 +53,16 @@ public class ResultExceptionMiddleware
 
             var traceId = Activity.Current?.Id ?? context.TraceIdentifier;
             result.CorrelationId = traceId;
-            
+
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            await context.Response.WriteAsync(JsonSerializer.Serialize(result));
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(result, jsonOptions));
         }
     }
 }
