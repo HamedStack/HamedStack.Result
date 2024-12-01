@@ -19,7 +19,7 @@ public static class ResultExtensions
     {
         return result.Status switch
         {
-            ResultStatus.Success => new OkResult(),
+            ResultStatus.Success => new ObjectResult(result) { StatusCode = 200 },
             ResultStatus.Failure => new BadRequestObjectResult(result),
             ResultStatus.Forbidden => new ForbidResult(),
             ResultStatus.Unauthorized => new UnauthorizedObjectResult(result),
@@ -42,7 +42,7 @@ public static class ResultExtensions
     {
         return result.Status switch
         {
-            ResultStatus.Success => new OkResult(),
+            ResultStatus.Success => new ObjectResult(result) { StatusCode = 200 },
             ResultStatus.Failure => new BadRequestObjectResult(result),
             ResultStatus.Forbidden => new ForbidResult(),
             ResultStatus.Unauthorized => new UnauthorizedObjectResult(result),
@@ -65,7 +65,7 @@ public static class ResultExtensions
     {
         return result.Status switch
         {
-            ResultStatus.Success => new OkResult(),
+            ResultStatus.Success => new ObjectResult(result) { StatusCode = 200 },
             ResultStatus.Failure => new BadRequestObjectResult(result),
             ResultStatus.Forbidden => new ForbidResult(),
             ResultStatus.Unauthorized => new UnauthorizedObjectResult(result),
