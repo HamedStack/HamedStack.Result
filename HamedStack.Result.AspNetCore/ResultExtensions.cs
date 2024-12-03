@@ -400,4 +400,57 @@ public static class ResultExtensions
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
+
+    /// <summary>
+    /// Converts a <see cref="Result{T}"/> to a <see cref="CreatedResult"/> for HTTP 201 Created responses.
+    /// </summary>
+    /// <typeparam name="T">The type of the result's value.</typeparam>
+    /// <param name="result">The result to convert.</param>
+    /// <param name="location">The URI of the created resource.</param>
+    /// <returns>A <see cref="CreatedResult"/> containing the result's value and location.</returns>
+    /// <exception cref="ArgumentException">Thrown when the result status is not Success.</exception>
+    public static IActionResult ToCreatedResult<T>(this Result<T> result, string location)
+    {
+        if (result.Status != ResultStatus.Success)
+        {
+            throw new ArgumentException("Result must have a status of Success to create a CreatedResult.");
+        }
+
+        return new CreatedResult(location, result.Value);
+    }
+
+    /// <summary>
+    /// Converts a <see cref="Result"/> to a <see cref="CreatedResult"/> for HTTP 201 Created responses.
+    /// </summary>
+    /// <param name="result">The result to convert.</param>
+    /// <param name="location">The URI of the created resource.</param>
+    /// <returns>A <see cref="CreatedResult"/> instance.</returns>
+    /// <exception cref="ArgumentException">Thrown when the result status is not Success.</exception>
+    public static IActionResult ToCreatedResult(this Result result, string location)
+    {
+        if (result.Status != ResultStatus.Success)
+        {
+            throw new ArgumentException("Result must have a status of Success to create a CreatedResult.");
+        }
+
+        return new CreatedResult(location, result);
+    }
+
+    /// <summary>
+    /// Converts a <see cref="PagedResult{T}"/> to a <see cref="CreatedResult"/> for HTTP 201 Created responses.
+    /// </summary>
+    /// <typeparam name="T">The type of the paged result's value.</typeparam>
+    /// <param name="pagedResult">The paged result to convert.</param>
+    /// <param name="location">The URI of the created resource.</param>
+    /// <returns>A <see cref="CreatedResult"/> instance.</returns>
+    /// <exception cref="ArgumentException">Thrown when the result status is not Success.</exception>
+    public static IActionResult ToCreatedResult<T>(this PagedResult<T> pagedResult, string location)
+    {
+        if (pagedResult.Status != ResultStatus.Success)
+        {
+            throw new ArgumentException("PagedResult must have a status of Success to create a CreatedResult.");
+        }
+
+        return new CreatedResult(location, pagedResult.Value);
+    }
 }
