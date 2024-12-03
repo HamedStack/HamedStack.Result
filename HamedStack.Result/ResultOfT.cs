@@ -71,39 +71,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating a conflict, with custom error messages and a default value.
-    /// </summary>
-    /// <param name="errorMessages">An array of error messages that describe the conflict.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, errors generated from the provided messages with a <see cref="ErrorType.Conflict"/> type, and the <c>Status</c> set to <see cref="ResultStatus.Conflict"/>.</returns>
-    public new static Result<T> Conflict(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Conflict };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a conflict, with the specified <see cref="Error"/> objects and a default value.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> objects that describe the conflict.</param>
-    /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Conflict"/>.</returns>
-    public new static Result<T> Conflict(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Conflict };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a conflict, with the provided exception message and a default value.
-    /// </summary>
-    /// <param name="exception">The exception indicating the reason for the conflict.</param>
-    /// <returns>A <see cref="Result{T}"/> with <c>IsSuccess</c> set to <c>false</c>, a default value, an error message extracted from the exception, and the status set to <see cref="ResultStatus.Conflict"/>.</returns>
-    public new static Result<T> Conflict(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Conflict };
-    }
-
-    /// <summary>
     /// Creates a failure result with the specified value and one or more error messages.
     /// </summary>
     /// <param name="value">The value associated with the failure result.</param>
@@ -139,38 +106,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating a general failure, with custom error messages and a default value.
-    /// </summary>
-    /// <param name="errorMessages">An array of error messages that describe the failure.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, errors generated from the provided messages, and the <c>Status</c> set to <see cref="ResultStatus.Failure"/>.</returns>
-    public new static Result<T> Failure(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Failure };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a general failure, with the specified <see cref="Error"/> objects and a default value.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> objects that describe the failure.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Failure"/>.</returns>
-    public new static Result<T> Failure(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Failure };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a general failure, with the provided exception message and a default value.
-    /// </summary>
-    /// <param name="exception">The exception indicating the reason for the failure.</param>
-    /// <returns>A <see cref="Result{T}"/> with <c>IsSuccess</c> set to <c>false</c>, a default value, an error message extracted from the exception, and the status set to <see cref="ResultStatus.Failure"/>.</returns>
-    public new static Result<T> Failure(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Failure };
-    }
-
-    /// <summary>
     /// Creates a forbidden result with the specified value and one or more error messages.
     /// </summary>
     /// <param name="value">The value associated with the forbidden result.</param>
@@ -203,40 +138,6 @@ public class Result<T> : Result
     {
         var errors = new[] { new Error(exception.Message) };
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Forbidden };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a forbidden action, with custom error messages and a default value.
-    /// </summary>
-    /// <param name="errorMessages">An array of error messages that describe the forbidden action.</param>
-    /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, errors generated from the provided messages, and the <c>Status</c> set to <see cref="ResultStatus.Forbidden"/>.</returns>
-    public new static Result<T> Forbidden(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Forbidden };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a forbidden action, with the specified <see cref="Error"/> objects and a default value.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> objects that describe the forbidden action.</param>
-    /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Forbidden"/>.</returns>
-    public new static Result<T> Forbidden(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Forbidden };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a forbidden action, with the provided exception message and a default value.
-    /// </summary>
-    /// <param name="exception">The exception indicating the reason for the forbidden action.</param>
-    /// <returns>A <see cref="Result{T}"/> with <c>IsSuccess</c> set to <c>false</c>, a default value, an error message extracted from the exception, and the status set to <see cref="ResultStatus.Forbidden"/>.</returns>
-    public new static Result<T> Forbidden(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Forbidden };
     }
 
     /// <summary>
@@ -289,38 +190,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating an invalid action, with custom error messages and a default value.
-    /// </summary>
-    /// <param name="errorMessages">An array of error messages that describe the invalid action.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, errors generated from the provided messages, and the <c>Status</c> set to <see cref="ResultStatus.Invalid"/>.</returns>
-    public new static Result<T> Invalid(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Invalid };
-    }
-
-    /// <summary>
-    /// Creates a result indicating an invalid action, with the specified <see cref="Error"/> objects and a default value.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> objects that describe the invalid action.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Invalid"/>.</returns>
-    public new static Result<T> Invalid(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Invalid };
-    }
-
-    /// <summary>
-    /// Creates a result indicating an invalid action, with the provided exception message and a default value.
-    /// </summary>
-    /// <param name="exception">The exception indicating the reason for the invalid action.</param>
-    /// <returns>A <see cref="Result{T}"/> with <c>IsSuccess</c> set to <c>false</c>, a default value, an error message extracted from the exception, and the status set to <see cref="ResultStatus.Invalid"/>.</returns>
-    public new static Result<T> Invalid(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Invalid };
-    }
-
-    /// <summary>
     /// Creates a not found result with the specified value and one or more error messages.
     /// </summary>
     /// <param name="value">The value associated with the not found result.</param>
@@ -356,48 +225,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating that the requested resource was not found, with custom error messages and a default value.
-    /// </summary>
-    /// <param name="errorMessages">An array of error messages that describe the reason the resource was not found.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, errors generated from the provided messages, and the <c>Status</c> set to <see cref="ResultStatus.NotFound"/>.</returns>
-    public new static Result<T> NotFound(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.NotFound };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the requested resource was not found, with the specified <see cref="Error"/> objects and a default value.
-    /// </summary>
-    /// <param name="errors">An array of <see cref="Error"/> objects that describe the reason the resource was not found.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, a default value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.NotFound"/>.</returns>
-    public new static Result<T> NotFound(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.NotFound };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the requested resource was not found, with the provided exception message and a default value.
-    /// </summary>
-    /// <param name="exception">The exception indicating the reason the resource was not found.</param>
-    /// <returns>A <see cref="Result{T}"/> with <c>IsSuccess</c> set to <c>false</c>, a default value, an error message extracted from the exception, and the status set to <see cref="ResultStatus.NotFound"/>.</returns>
-    public new static Result<T> NotFound(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.NotFound };
-    }
-
-    /// <summary>
-    /// Creates a success result with the specified value.
-    /// </summary>
-    /// <param name="value">The value to return with the result.</param>
-    /// <returns>A success <see cref="Result{T}"/> with the specified value.</returns>
-    public static Result<T> Success(T? value)
-    {
-        return new Result<T> { IsSuccess = true, Value = value, Status = ResultStatus.Success };
-    }
-
-    /// <summary>
     /// Creates a result indicating a successful operation, with no value and no success message.
     /// </summary>
     /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
@@ -413,19 +240,9 @@ public class Result<T> : Result
     /// <param name="value">The value to return with the result.</param>
     /// <param name="successMessage">The success message.</param>
     /// <returns>A success <see cref="Result{T}"/> with the specified value and success message.</returns>
-    public static Result<T> Success(T? value, string successMessage)
+    public static Result<T> Success(T? value, string successMessage = "")
     {
         return new Result<T> { IsSuccess = true, Value = value, SuccessMessage = successMessage, Status = ResultStatus.Success };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a successful operation, with no value but a custom success message.
-    /// </summary>
-    /// <param name="successMessage">The success message indicating the result of the operation.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>true</c>, a default value, the provided success message, and the <c>Status</c> set to <see cref="ResultStatus.Success"/>.</returns>
-    public new static Result<T> Success(string successMessage)
-    {
-        return new Result<T> { IsSuccess = true, Value = default, SuccessMessage = successMessage, Status = ResultStatus.Success };
     }
 
     /// <summary>
@@ -463,38 +280,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating that the operation was unauthorized, with the provided error messages.
-    /// </summary>
-    /// <param name="errorMessages">The error messages indicating the reason for the unauthorized operation.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided error messages, and the <c>Status</c> set to <see cref="ResultStatus.Unauthorized"/>.</returns>
-    public new static Result<T> Unauthorized(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unauthorized };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation was unauthorized, with the provided error objects.
-    /// </summary>
-    /// <param name="errors">The <see cref="Error"/> objects indicating the reason for the unauthorized operation.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Unauthorized"/>.</returns>
-    public new static Result<T> Unauthorized(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unauthorized };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation was unauthorized, with an error generated from an exception message.
-    /// </summary>
-    /// <param name="exception">The exception that caused the unauthorized operation, with its message used as the error description.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, an error generated from the exception message, and the <c>Status</c> set to <see cref="ResultStatus.Unauthorized"/>.</returns>
-    public new static Result<T> Unauthorized(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unauthorized };
-    }
-
-    /// <summary>
     /// Creates an unavailable result with the specified value and one or more error messages.
     /// </summary>
     /// <param name="value">The value associated with the unavailable result.</param>
@@ -529,38 +314,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating that the operation is unavailable, with the provided error messages.
-    /// </summary>
-    /// <param name="errorMessages">The error messages indicating the reason the operation is unavailable.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided error messages, and the <c>Status</c> set to <see cref="ResultStatus.Unavailable"/>.</returns>
-    public new static Result<T> Unavailable(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unavailable };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation is unavailable, with the provided error objects.
-    /// </summary>
-    /// <param name="errors">The <see cref="Error"/> objects indicating the reason the operation is unavailable.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Unavailable"/>.</returns>
-    public new static Result<T> Unavailable(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unavailable };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation is unavailable, with an error generated from an exception message.
-    /// </summary>
-    /// <param name="exception">The exception that caused the operation to be unavailable, with its message used as the error description.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, an error generated from the exception message, and the <c>Status</c> set to <see cref="ResultStatus.Unavailable"/>.</returns>
-    public new static Result<T> Unavailable(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unavailable };
-    }
-
-    /// <summary>
     /// Creates an unsupported result with the specified value and one or more error messages.
     /// </summary>
     /// <param name="value">The value associated with the unsupported result.</param>
@@ -592,38 +345,6 @@ public class Result<T> : Result
     {
         var errors = new[] { new Error(exception.Message) };
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.Unsupported };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation is unsupported, with the provided error messages.
-    /// </summary>
-    /// <param name="errorMessages">The error messages indicating the reason the operation is unsupported.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided error messages, and the <c>Status</c> set to <see cref="ResultStatus.Unsupported"/>.</returns>
-    public new static Result<T> Unsupported(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unsupported };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation is unsupported, with the provided error objects.
-    /// </summary>
-    /// <param name="errors">The <see cref="Error"/> objects indicating the reason the operation is unsupported.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.Unsupported"/>.</returns>
-    public new static Result<T> Unsupported(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unsupported };
-    }
-
-    /// <summary>
-    /// Creates a result indicating that the operation is unsupported, with an error generated from an exception message.
-    /// </summary>
-    /// <param name="exception">The exception that caused the operation to be unsupported, with its message used as the error description.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, an error generated from the exception message, and the <c>Status</c> set to <see cref="ResultStatus.Unsupported"/>.</returns>
-    public new static Result<T> Unsupported(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.Unsupported };
     }
 
     /// <summary>
@@ -662,41 +383,6 @@ public class Result<T> : Result
     }
 
     /// <summary>
-    /// Creates a result indicating a validation error, with the provided error messages.
-    /// </summary>
-    /// <param name="errorMessages">The error messages indicating the reasons for the validation failure.</param>
-    /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided error messages, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
-    public new static Result<T> ValidationError(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.ValidationError };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a validation error, with the provided error objects.
-    /// </summary>
-    /// <param name="errors">The <see cref="Error"/> objects indicating the reasons for the validation failure.</param>
-    /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
-    public new static Result<T> ValidationError(params Error[] errors)
-    {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.ValidationError };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a validation error, with an error generated from an exception message.
-    /// </summary>
-    /// <param name="exception">The exception that caused the validation error, with its message used as the error description.</param>
-    /// <typeparam name="T">The type of the value associated with the operation result (defaulted to <c>default</c> in this method).</typeparam>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, an error generated from the exception message, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
-    public new static Result<T> ValidationError(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.ValidationError };
-    }
-
-    /// <summary>
     /// Creates a result indicating a critical error, with custom error messages and an associated value.
     /// </summary>
     /// <param name="value">The value of type <typeparamref name="T"/> to be associated with the critical error result.</param>
@@ -732,35 +418,14 @@ public class Result<T> : Result
         var errors = new[] { new Error(exception.Message) };
         return new Result<T> { IsSuccess = false, Value = value, Errors = errors, Status = ResultStatus.CriticalError };
     }
-    /// <summary>
-    /// Creates a result indicating a critical error, with the provided error messages.
-    /// </summary>
-    /// <param name="errorMessages">The error messages describing the critical failure.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided error messages, and the <c>Status</c> set to <see cref="ResultStatus.CriticalError"/>.</returns>
-    public new static Result<T> CriticalError(params string[] errorMessages)
-    {
-        var errors = errorMessages.Select(e => new Error(e)).ToArray();
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.CriticalError };
-    }
 
     /// <summary>
-    /// Creates a result indicating a critical error, with the provided error objects.
+    /// Creates a <see cref="Result"/> instance representing a successful operation with no content to return.
+    /// Typically used for operations that do not require a response body, such as DELETE actions.
     /// </summary>
-    /// <param name="errors">The <see cref="Error"/> objects describing the critical failure.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, the provided <see cref="Error"/> objects, and the <c>Status</c> set to <see cref="ResultStatus.CriticalError"/>.</returns>
-    public new static Result<T> CriticalError(params Error[] errors)
+    /// <returns>A <see cref="Result"/> with <see cref="Result.IsSuccess"/> set to true and <see cref="Result.Status"/> set to <see cref="ResultStatus.NoContent"/>.</returns>
+    public new static Result<T> NoContent()
     {
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.CriticalError };
-    }
-
-    /// <summary>
-    /// Creates a result indicating a critical error, with an error generated from an exception message.
-    /// </summary>
-    /// <param name="exception">The exception that caused the critical error, with its message used as the error description.</param>
-    /// <returns>A <see cref="Result{T}"/> object with <c>IsSuccess</c> set to <c>false</c>, no value, an error generated from the exception message, and the <c>Status</c> set to <see cref="ResultStatus.CriticalError"/>.</returns>
-    public new static Result<T> CriticalError(Exception exception)
-    {
-        var errors = new[] { new Error(exception.Message) };
-        return new Result<T> { IsSuccess = false, Value = default, Errors = errors, Status = ResultStatus.CriticalError };
+        return new Result<T> { IsSuccess = true, Status = ResultStatus.NoContent };
     }
 }

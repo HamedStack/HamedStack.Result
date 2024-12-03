@@ -20,7 +20,7 @@ public static class ResultExtensions
     public static Result<TRight> ToResult<TLeft, TRight>(this Either<TLeft, TRight> either)
     {
         return either.Match(
-            left => Result<TRight>.Failure($"Error: {left}"),
+            left => Result<TRight>.Failure(default, $"Error: {left}"),
             right => Result<TRight>.Success(right)
         );
     }
@@ -49,7 +49,7 @@ public static class ResultExtensions
     {
         return option.Match(
             some => Result<T>.Success(some),
-            () => Result<T>.Failure(noneMessage)
+            () => Result<T>.Failure(default, noneMessage)
         );
     }
 
@@ -74,7 +74,7 @@ public static class ResultExtensions
     {
         return exceptional.Match(
             success => Result<T>.Success(success),
-            failure => Result<T>.Failure(failure.Message)
+            failure => Result<T>.Failure(default, failure.Message)
         );
     }
 
@@ -99,7 +99,7 @@ public static class ResultExtensions
     {
         return validation.Match(
             success => Result<T>.Success(success),
-            errors => Result<T>.Failure(errors.ToArray())
+            errors => Result<T>.Failure(default, errors.ToArray())
         );
     }
 

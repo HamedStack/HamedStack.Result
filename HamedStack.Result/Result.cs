@@ -400,6 +400,16 @@ public class Result
     }
 
     /// <summary>
+    /// Creates a <see cref="Result"/> instance representing a successful operation with no content to return.
+    /// Typically used for operations that do not require a response body, such as DELETE actions.
+    /// </summary>
+    /// <returns>A <see cref="Result"/> with <see cref="Result.IsSuccess"/> set to true and <see cref="Result.Status"/> set to <see cref="ResultStatus.NoContent"/>.</returns>
+    public static Result NoContent()
+    {
+        return new Result { IsSuccess = true, Status = ResultStatus.NoContent };
+    }
+
+    /// <summary>
     /// Adds or updates a key-value pair in the result's metadata.
     /// </summary>
     /// <param name="key">The key of the metadata item.</param>

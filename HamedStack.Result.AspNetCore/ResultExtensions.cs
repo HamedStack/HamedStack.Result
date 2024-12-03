@@ -29,6 +29,8 @@ public static class ResultExtensions
             ResultStatus.Unsupported => new ObjectResult(result) { StatusCode = 501 },
             ResultStatus.Unavailable => new ObjectResult(result) { StatusCode = 503 },
             ResultStatus.ValidationError => new BadRequestObjectResult(result),
+            ResultStatus.CriticalError => new ObjectResult(result) { StatusCode = 500 },
+            ResultStatus.NoContent => new NoContentResult(),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -52,6 +54,8 @@ public static class ResultExtensions
             ResultStatus.Unsupported => new ObjectResult(result) { StatusCode = 501 },
             ResultStatus.Unavailable => new ObjectResult(result) { StatusCode = 503 },
             ResultStatus.ValidationError => new BadRequestObjectResult(result),
+            ResultStatus.CriticalError => new ObjectResult(result) { StatusCode = 500 },
+            ResultStatus.NoContent => new NoContentResult(),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -75,6 +79,8 @@ public static class ResultExtensions
             ResultStatus.Unsupported => new ObjectResult(result) { StatusCode = 501 },
             ResultStatus.Unavailable => new ObjectResult(result) { StatusCode = 503 },
             ResultStatus.ValidationError => new BadRequestObjectResult(result),
+            ResultStatus.CriticalError => new ObjectResult(result) { StatusCode = 500 },
+            ResultStatus.NoContent => new NoContentResult(),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -85,7 +91,7 @@ public static class ResultExtensions
     /// <param name="result">The result to convert.</param>
     /// <returns>An <see cref="IResult"/> corresponding to the status of the <paramref name="result"/>.</returns>
     /// <exception cref="NotSupportedException">Thrown when the result status is unknown or unsupported.</exception>
-    public static IResult ToMinimalApiResult<T>(this Result result)
+    public static IResult ToMinimalApiResult(this Result result)
     {
         return result.Status switch
         {
@@ -99,6 +105,8 @@ public static class ResultExtensions
             ResultStatus.Unsupported => Results.Json(result, statusCode: 501),
             ResultStatus.Unavailable => Results.Json(result, statusCode: 503),
             ResultStatus.ValidationError => Results.BadRequest(result),
+            ResultStatus.CriticalError => Results.Json(result, statusCode: 500),
+            ResultStatus.NoContent => Results.NoContent(),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -124,6 +132,8 @@ public static class ResultExtensions
             ResultStatus.Unsupported => Results.Json(result, statusCode: 501),
             ResultStatus.Unavailable => Results.Json(result, statusCode: 503),
             ResultStatus.ValidationError => Results.BadRequest(result),
+            ResultStatus.CriticalError => Results.Json(result, statusCode: 500),
+            ResultStatus.NoContent => Results.NoContent(),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -149,6 +159,8 @@ public static class ResultExtensions
             ResultStatus.Unsupported => Results.Json(result, statusCode: 501),
             ResultStatus.Unavailable => Results.Json(result, statusCode: 503),
             ResultStatus.ValidationError => Results.BadRequest(result),
+            ResultStatus.CriticalError => Results.Json(result, statusCode: 500),
+            ResultStatus.NoContent => Results.NoContent(),
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -218,6 +230,12 @@ public static class ResultExtensions
             ResultStatus.Unavailable => new ProblemDetails
             {
                 Status = 503,
+                Title = $"An internal server error has occurred. ({ResultStatus.Unavailable})",
+                Detail = result.GetErrorMessages().Aggregate((a, b) => a + ", " + b),
+            },
+            ResultStatus.CriticalError => new ProblemDetails
+            {
+                Status = 500,
                 Title = $"An internal server error has occurred. ({ResultStatus.Unavailable})",
                 Detail = result.GetErrorMessages().Aggregate((a, b) => a + ", " + b),
             },
@@ -294,6 +312,12 @@ public static class ResultExtensions
                 Title = $"An internal server error has occurred. ({ResultStatus.Unavailable})",
                 Detail = result.GetErrorMessages().Aggregate((a, b) => a + ", " + b),
             },
+            ResultStatus.CriticalError => new ProblemDetails
+            {
+                Status = 500,
+                Title = $"An internal server error has occurred. ({ResultStatus.Unavailable})",
+                Detail = result.GetErrorMessages().Aggregate((a, b) => a + ", " + b),
+            },
             _ => throw new NotSupportedException($"Unknown result status: {result.Status}"),
         };
     }
@@ -364,6 +388,12 @@ public static class ResultExtensions
             ResultStatus.Unavailable => new ProblemDetails
             {
                 Status = 503,
+                Title = $"An internal server error has occurred. ({ResultStatus.Unavailable})",
+                Detail = result.GetErrorMessages().Aggregate((a, b) => a + ", " + b),
+            },
+            ResultStatus.CriticalError => new ProblemDetails
+            {
+                Status = 500,
                 Title = $"An internal server error has occurred. ({ResultStatus.Unavailable})",
                 Detail = result.GetErrorMessages().Aggregate((a, b) => a + ", " + b),
             },

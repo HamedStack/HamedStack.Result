@@ -20,7 +20,7 @@ public static class ResultOfTExtensions
     {
         return result.IsSuccess
             ? bind(result.Value)
-            : Result<TOut>.Failure(result.Errors);
+            : Result<TOut>.Failure(default, result.Errors);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public static class ResultOfTExtensions
     {
         return result.IsSuccess
             ? Result<TOut>.Success(mapper(result.Value))
-            : Result<TOut>.Failure(result.Errors);
+            : Result<TOut>.Failure(default, result.Errors);
     }
 
     /// <summary>
@@ -118,11 +118,11 @@ public static class ResultOfTExtensions
         {
             return result.IsSuccess
                 ? Result<TOut>.Success(func(result.Value))
-                : Result<TOut>.Failure(result.Errors);
+                : Result<TOut>.Failure(default, result.Errors);
         }
         catch
         {
-            return Result<TOut>.Failure(error);
+            return Result<TOut>.Failure(default, error);
         }
     }
 

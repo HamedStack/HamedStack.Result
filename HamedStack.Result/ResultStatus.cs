@@ -59,5 +59,11 @@ public enum ResultStatus
     /// Indicates a critical error occurred, requiring immediate attention.
     /// This may include system-level failures, unhandled exceptions, or severe infrastructure issues.
     /// </summary>
-    CriticalError
+    CriticalError,
+
+    /// <summary>
+    /// Indicates that the operation was successful but there is no content to return.
+    /// This is typically used for operations like DELETE or actions that do not return data.
+    /// </summary>
+    NoContent
 }
