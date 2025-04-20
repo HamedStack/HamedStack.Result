@@ -122,7 +122,7 @@ public static class ResultOfTExtensions
         }
         catch
         {
-            return Result<TOut>.Failure(default, error);
+            return Result<TOut>.Failure(default, [error]);
         }
     }
 
@@ -133,17 +133,16 @@ public static class ResultOfTExtensions
     /// <typeparam name="TOut">The type of the output value.</typeparam>
     /// <param name="result">The input result.</param>
     /// <param name="func">The function to apply to the input result.</param>
-    /// <param name="errorType">The error type to use if an exception is thrown.</param>
     /// <param name="errorMessage">The error message to use if an exception is thrown.</param>
     /// <param name="errorCode">The optional error code to use if an exception is thrown.</param>
     /// <returns>A new result of type <see cref="Result{TOut}"/>.</returns>
     public static Result<TOut> TryCatch<TIn, TOut>(this Result<TIn> result, Func<TIn?, Result<TOut>> func, string errorMessage, string? errorCode = null)
     {
-        return result.TryCatch(func, string.IsNullOrWhiteSpace(errorCode) 
-            ? new Error(errorMessage) 
+        return result.TryCatch(func, string.IsNullOrWhiteSpace(errorCode)
+            ? new Error(errorMessage)
             : new Error(errorMessage, errorCode));
     }
-    
+
     /// <summary>
     /// Unwraps the result value or returns a default value if the result is a failure.
     /// </summary>

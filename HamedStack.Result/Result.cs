@@ -69,6 +69,17 @@ public class Result
     }
 
     /// <summary>
+    /// Creates a conflict result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Conflict</c> and corresponding errors.</returns>
+    public static Result Conflict(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
+    }
+
+    /// <summary>
     /// Creates a <see cref="Result"/> instance indicating a conflict in the operation, populated with specified errors.
     /// This method is used when an operation cannot proceed because of conflicting state or resources.
     /// </summary>
@@ -78,7 +89,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Conflict };
     }
-
+    /// <summary>
+    /// Creates a conflict result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Conflict</c> and provided errors.</returns>
+    public static Result Conflict(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Conflict };
+    }
     /// <summary>
     /// Creates a conflict result using an exception to generate error details.
     /// </summary>
@@ -91,7 +110,7 @@ public class Result
     }
 
     /// <summary>
-    /// Creates an failure result with one or more error messages.
+    /// Creates a failure result with one or more error messages.
     /// </summary>
     /// <param name="errorMessages">The error messages.</param>
     /// <returns>An error <see cref="Result"/>.</returns>
@@ -102,7 +121,18 @@ public class Result
     }
 
     /// <summary>
-    /// Creates an failure <see cref="Result"/> instance with the specified errors, indicating a failed operation.
+    /// Creates a failure result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Failure</c> and corresponding errors.</returns>
+    public static Result Failure(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Failure };
+    }
+
+    /// <summary>
+    /// Creates a failure <see cref="Result"/> instance with the specified errors, indicating a failed operation.
     /// </summary>
     /// <param name="errors">An array of <see cref="Error"/> instances representing the errors encountered during the operation.</param>
     /// <returns>A <see cref="Result"/> instance configured to represent an error state, including the provided error details.</returns>
@@ -110,7 +140,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Failure };
     }
-
+    /// <summary>
+    /// Creates a failure result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Failure</c> and provided errors.</returns>
+    public static Result Failure(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Failure };
+    }
     /// <summary>
     /// Creates a failure result using an exception to generate error details.
     /// </summary>
@@ -132,6 +170,16 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
+    /// <summary>
+    /// Creates a forbidden result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Forbidden</c> and corresponding errors.</returns>
+    public static Result Forbidden(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
+    }
 
     /// <summary>
     /// Creates a <see cref="Result"/> instance representing a forbidden operation, populated with the specified errors.
@@ -143,7 +191,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Forbidden };
     }
-
+    /// <summary>
+    /// Creates a forbidden result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Forbidden</c> and provided errors.</returns>
+    public static Result Forbidden(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Forbidden };
+    }
     /// <summary>
     /// Creates a forbidden result using an exception to generate error details.
     /// </summary>
@@ -167,6 +223,17 @@ public class Result
     }
 
     /// <summary>
+    /// Creates an invalid result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Invalid</c> and corresponding errors.</returns>
+    public static Result Invalid(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
+    }
+
+    /// <summary>
     /// Creates a <see cref="Result"/> instance indicating an invalid operation, populated with specified errors.
     /// This method is used when an operation is rejected due to validation failures or other rules that render the request invalid.
     /// </summary>
@@ -176,7 +243,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Invalid };
     }
-
+    /// <summary>
+    /// Creates an invalid result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Invalid</c> and provided errors.</returns>
+    public static Result Invalid(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Invalid };
+    }
     /// <summary>
     /// Creates an invalid result using an exception to generate error details.
     /// </summary>
@@ -198,7 +273,16 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
-
+    /// <summary>
+    /// Creates a not found result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>NotFound</c> and corresponding errors.</returns>
+    public static Result NotFound(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
+    }
     /// <summary>
     /// Creates a <see cref="Result"/> instance indicating that the requested resource was not found, populated with specified errors.
     /// This method is typically used when an operation cannot be completed because a necessary resource is missing.
@@ -209,7 +293,16 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.NotFound };
     }
+    /// <summary>
+    /// Creates a not found result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>NotFound</c> and provided errors.</returns>
 
+    public static Result NotFound(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.NotFound };
+    }
     /// <summary>
     /// Creates a not found result using an exception to generate error details.
     /// </summary>
@@ -249,6 +342,18 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
+
+    /// <summary>
+    /// Creates an unauthorized result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Unauthorized</c> and corresponding errors.</returns>
+    public static Result Unauthorized(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
+    }
+
     /// <summary>
     /// Creates a <see cref="Result"/> instance indicating an unauthorized operation, populated with specified errors.
     /// This method is used when an operation cannot proceed because the requester lacks proper authentication.
@@ -259,7 +364,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unauthorized };
     }
-
+    /// <summary>
+    /// Creates an unauthorized result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Unauthorized</c> and provided errors.</returns>
+    public static Result Unauthorized(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Unauthorized };
+    }
     /// <summary>
     /// Creates an unauthorized result using an exception to generate error details.
     /// </summary>
@@ -281,6 +394,18 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
     }
+
+    /// <summary>
+    /// Creates an unavailable result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Unavailable</c> and corresponding errors.</returns>
+    public static Result Unavailable(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
+    }
+
     /// <summary>
     /// Creates a <see cref="Result"/> instance indicating that the service or resource is currently unavailable, populated with specified errors.
     /// This method can be used during maintenance periods or when a service is down for any reason.
@@ -291,7 +416,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unavailable };
     }
-
+    /// <summary>
+    /// Creates an unavailable result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Unavailable</c> and provided errors.</returns>
+    public static Result Unavailable(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Unavailable };
+    }
     /// <summary>
     /// Creates an unavailable result using an exception to generate error details.
     /// </summary>
@@ -313,6 +446,18 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
     }
+
+    /// <summary>
+    /// Creates an unsupported result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Unsupported</c> and corresponding errors.</returns>
+    public static Result Unsupported(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
+    }
+
     /// <summary>
     /// Creates a <see cref="Result"/> instance indicating that the operation is unsupported, populated with specified errors.
     /// This method is used when an operation cannot be completed because it is not supported by the system, perhaps due to being obsolete or not yet implemented.
@@ -323,7 +468,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.Unsupported };
     }
-
+    /// <summary>
+    /// Creates an unsupported result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>Unsupported</c> and provided errors.</returns>
+    public static Result Unsupported(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.Unsupported };
+    }
     /// <summary>
     /// Creates an unsupported result using an exception to generate error details.
     /// </summary>
@@ -339,13 +492,22 @@ public class Result
     /// Creates a <see cref="Result"/> indicating a validation failure with custom error messages.
     /// </summary>
     /// <param name="errorMessages">An array of error messages that describe the validation failures.</param>
-    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified error messages wrapped in <see cref="Error"/> objects with a <see cref="ErrorType.ValidationError"/> type, and the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
+    /// <returns>A <see cref="Result"/> object with <c>IsSuccess</c> set to <c>false</c>, containing the specified error messages wrapped in <see cref="Error"/> objects with the <c>Status</c> set to <see cref="ResultStatus.ValidationError"/>.</returns>
     public static Result ValidationError(params string[] errorMessages)
     {
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
     }
-
+    /// <summary>
+    /// Creates a validation error result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>ValidationError</c> and corresponding errors.</returns>
+    public static Result ValidationError(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
+    }
     /// <summary>
     /// Creates a <see cref="Result"/> indicating a validation failure with specified <see cref="Error"/> objects.
     /// </summary>
@@ -355,7 +517,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.ValidationError };
     }
-
+    /// <summary>
+    /// Creates a validation error result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>ValidationError</c> and provided errors.</returns>
+    public static Result ValidationError(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.ValidationError };
+    }
     /// <summary>
     /// Creates a validation error result using an exception to generate error details.
     /// </summary>
@@ -377,7 +547,16 @@ public class Result
         var errors = errorMessages.Select(e => new Error(e)).ToArray();
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.CriticalError };
     }
-
+    /// <summary>
+    /// Creates a critical error result using a collection of error messages.
+    /// </summary>
+    /// <param name="errorMessages">A collection of error messages as strings.</param>
+    /// <returns>A <see cref="Result"/> with status <c>CriticalError</c> and corresponding errors.</returns>
+    public static Result CriticalError(IEnumerable<string> errorMessages)
+    {
+        var errors = errorMessages.Select(e => new Error(e)).ToArray();
+        return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.CriticalError };
+    }
     /// <summary>
     /// Creates a <see cref="Result"/> indicating a critical error with specified <see cref="Error"/> objects.
     /// </summary>
@@ -387,7 +566,15 @@ public class Result
     {
         return new Result { IsSuccess = false, Errors = errors, Status = ResultStatus.CriticalError };
     }
-
+    /// <summary>
+    /// Creates a critical error result using a collection of <see cref="Error"/> objects.
+    /// </summary>
+    /// <param name="errors">A collection of <see cref="Error"/> instances.</param>
+    /// <returns>A <see cref="Result"/> with status <c>CriticalError</c> and provided errors.</returns>
+    public static Result CriticalError(IEnumerable<Error> errors)
+    {
+        return new Result { IsSuccess = false, Errors = errors.ToArray(), Status = ResultStatus.CriticalError };
+    }
     /// <summary>
     /// Creates a <see cref="Result"/> indicating a critical error caused by an exception.
     /// </summary>
